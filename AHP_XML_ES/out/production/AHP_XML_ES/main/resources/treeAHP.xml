@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LAMA>
+    <alternatives>
+        <alternative id="1">Francja</alternative>
+        <alternative id="2">Belgia</alternative>
+        <alternative id="3">Dania</alternative>
+        <!--<alternative id="4">Madryt</alternative>-->
+    </alternatives>
+    <criterias>
+        <criteria name="cost">
+            <wag>2</wag>
+            <criteria name="Living">
+                <wag>3</wag>
+                <comparing>1 2 4 0.5 1 6 0.3 0.2 1</comparing>
+            </criteria>
+            <criteria name="Fun">
+                <wag>3</wag>
+                <comparing>1 2 4 0.5 1 6 0.3 0.2 1</comparing>
+            </criteria>
+            <criteria name="Traveling">
+                <wag>3</wag>
+                <comparing>1 2 4 0.5 1 6 0.3 0.2 1</comparing>
+            </criteria>
+        </criteria>
+        <criteria name="lama">
+            <wag>3</wag>
+            <criteria name="Lidfgving">
+                <wag>3</wag>
+                <comparing>1 2 7 0.5 1 6 0.2 0.1 1</comparing>
+            </criteria>
+            <criteria name="Ftun">
+                <wag>3</wag>
+                <comparing>1 2 4 0.5 1 6 0.3 0.2 1</comparing>
+            </criteria>
+        </criteria>
+        <criteria name="lama">
+            <wag>1</wag>
+            <comparing>1 2 7 0.5 1 6 0.2 0.1 1</comparing>
+        </criteria>
+    </criterias>
+</LAMA>
