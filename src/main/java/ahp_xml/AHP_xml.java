@@ -21,7 +21,6 @@ import java.util.List;
 
 public class AHP_xml {
 
-    private int alternativesAmong;
     private Document documentXML;
 
     public AHP_xml(File file) {
@@ -39,7 +38,7 @@ public class AHP_xml {
         }
         documentXML.getDocumentElement().normalize();
 
-        alternativesAmong = documentXML.getElementsByTagName("alternative").getLength();
+//        alternativesAmong = documentXML.getElementsByTagName("alternative").getLength();
     }
 
     public double[] createVectorWag() {
@@ -78,15 +77,17 @@ public class AHP_xml {
 
     private Matrix createCriteriaMatrix(Element criteriaElement) {
 
-        double[][] futureMatrix = new double[alternativesAmong][alternativesAmong];
-
         String matrixString = criteriaElement.getElementsByTagName("comparing").item(0).getTextContent();
 
         String[] matrixStringTab = matrixString.split(" ");
 
-        for(int i = 0; i < alternativesAmong; i++)
-            for(int j = 0; j < alternativesAmong; j++)
-                futureMatrix[i][j] = Double.parseDouble(matrixStringTab[alternativesAmong*i+j]);
+        int matrixSize = (int)Math.sqrt(matrixStringTab.length);
+
+        double[][] futureMatrix = new double[matrixSize][matrixSize];
+
+        for(int i = 0; i < matrixSize; i++)
+            for(int j = 0; j < matrixSize; j++)
+                futureMatrix[i][j] = Double.parseDouble(matrixStringTab[matrixSize*i+j]);
 
         return new Matrix(futureMatrix);
     }
@@ -111,15 +112,16 @@ public class AHP_xml {
 
         Matrix vector = decomposedMatrix.getV();
 
-        double[] resultVector = new double[alternativesAmong];
+        int vectorSize = vector.getColumnDimension();
+        double[] resultVector = new double[vectorSize];
 
-        for (int i = 0; i < alternativesAmong; i++)
+        for (int i = 0; i < vectorSize; i++)
             resultVector[i] = vector.get(i, index);
 
         double suma = 0;
-        for (int j = 0; j < alternativesAmong; j++)
+        for (int j = 0; j < vectorSize; j++)
             suma += resultVector[j];
-        for (int j = 0; j < alternativesAmong; j++)
+        for (int j = 0; j < vectorSize; j++)
             resultVector[j] = resultVector[j] / suma;
 
         return resultVector;
@@ -127,16 +129,18 @@ public class AHP_xml {
 
     private double[] createDecisionVector(List<VectorWag> vectorList) {
 
-        double[] resultVector = new double[alternativesAmong];
+        int vectorSize = vectorList.get(0).vector.length;
+
+        double[] resultVector = new double[vectorSize];
 
         for (VectorWag i : vectorList)
-            for(int j = 0; j < alternativesAmong; j++)
+            for(int j = 0; j < vectorSize; j++)
                 resultVector[j] += i.vector[j] * i.wag;
 
         double suma = 0;
-        for (int i = 0; i < alternativesAmong; ++i)
+        for (int i = 0; i < vectorSize; ++i)
             suma += resultVector[i];
-        for (int i = 0; i < alternativesAmong; ++i)
+        for (int i = 0; i < vectorSize; ++i)
             resultVector[i] = resultVector[i] / suma;
 
         return resultVector;
