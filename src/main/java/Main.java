@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        File file = new File("src/main/resources/treeAHPtest1.xml");
+        File file = new File("src/main/resources/treeAHPtest3.xml");
         AHP_xml ahpTree = new AHP_xml(file);
 
         double[] ahpVector = ahpTree.createVectorWag();

@@ -45,28 +45,49 @@ public class AHP_xml {
 
         Element root = documentXML.getDocumentElement();
         Element criteriaStart = (Element)root.getElementsByTagName("criterias").item(0);
-        return postorder(criteriaStart).vector;
+        return postorder(criteriaStart,1).vector;
     }
 
-    private VectorWag postorder(Element element){
+//    private VectorWag postorder(Element element){
+//
+//        if(element.getElementsByTagName("criteria").getLength() == 0){
+//            VectorWag partVectorWag = new VectorWag();
+//            partVectorWag.wag = Double.parseDouble(element.getElementsByTagName("wag").item(0).getTextContent());
+//            partVectorWag.vector = createVectorFromMatrix(createAlternativeMatrix(element));
+//            return partVectorWag;
+//        } else {
+//            NodeList childrenList = element.getChildNodes();
+//            List<VectorWag> criteriaList = new ArrayList<>();
+//            for(int i = 0; i < childrenList.getLength(); i++)
+//                if (childrenList.item(i).getNodeName().equals("criteria"))
+//                    criteriaList.add(postorder((Element)childrenList.item(i)));
+//            return new VectorWag(createDecisionVector(criteriaList),1);
+//        }
+//    }
 
+    private VectorWag postorder(Element element, double wagValue){
         if(element.getElementsByTagName("criteria").getLength() == 0){
             VectorWag partVectorWag = new VectorWag();
-            partVectorWag.wag = Double.parseDouble(element.getElementsByTagName("wag").item(0).getTextContent());
-            partVectorWag.vector = createVectorFromMatrix(createAlternativeMatrix(element));
+//            partVectorWag.wag = Double.parseDouble(element.getElementsByTagName("wag").item(0).getTextContent());
+            partVectorWag.wag = wagValue;
+            partVectorWag.vector = createVectorFromMatrix(createAlternativeMatrix(element, "comparing"));
             return partVectorWag;
         } else {
             NodeList childrenList = element.getChildNodes();
             List<VectorWag> criteriaList = new ArrayList<>();
+            double[] subcriteriasWagVeector = createVectorFromMatrix(createAlternativeMatrix(element, "wag"));
+            int tabIterator = 0;
             for(int i = 0; i < childrenList.getLength(); i++)
-                if (childrenList.item(i).getNodeName().equals("criteria"))
-                    criteriaList.add(postorder((Element)childrenList.item(i)));
+                if (childrenList.item(i).getNodeName().equals("criteria")){
+                    criteriaList.add(postorder((Element)childrenList.item(i), subcriteriasWagVeector[tabIterator]));
+                    tabIterator++;
+                }
             return new VectorWag(createDecisionVector(criteriaList),1);
         }
     }
 
-    private Matrix createAlternativeMatrix(Element criteriaElement) {
-        String matrixString = criteriaElement.getElementsByTagName("comparing").item(0).getTextContent();
+    private Matrix createAlternativeMatrix(Element criteriaElement, String categoryName) {
+        String matrixString = criteriaElement.getElementsByTagName(categoryName).item(0).getTextContent();
         String[] matrixStringTab = matrixString.split(" ");
         int matrixSize = (int)Math.sqrt(matrixStringTab.length);
         double[][] futureMatrix = new double[matrixSize][matrixSize];
