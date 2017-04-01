@@ -1,7 +1,9 @@
 package ahp_model_to_xml;
 
+import Jama.Matrix;
 import ahp_model.AHP;
 import ahp_model.Alternative;
+import ahp_model.Criteria;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,6 +42,8 @@ public class AhpToXml {
         Element rootElement = documentXML.createElement("LAMA");
         documentXML.appendChild(rootElement);
         rootElement.appendChild(addAlternatives(ahpModel.alternativesList));
+        rootElement.appendChild(addCriterias(ahpModel.criteriasList));
+
 
 
 
@@ -61,8 +65,41 @@ public class AhpToXml {
         return alternatives;
     }
 
-    Element addCriterias(){
-        return null;
+    Element addCriterias(List<Criteria> critList){
+        Element criterias = documentXML.createElement("criterias");
+        for (int i = 0; i < critList.size(); i++)
+            criterias.appendChild(addCriterium(critList.get(i)));
+        return criterias;
+    }
+
+    Element addCriterium(Criteria crit){
+        Element criterium = documentXML.createElement("criteria");
+
+        Attr attr = documentXML.createAttribute("name");
+        attr.setValue(crit.name);
+        criterium.setAttributeNode(attr);
+
+        if(crit.hasSubcriteria==true){
+            Element wag = documentXML.createElement("wag");
+            wag.appendChild(documentXML.createTextNode(stringFromMatrix(crit.matrix)));
+            criterium.appendChild(wag);
+            for (int i=0; i<crit.subcriteriaList.size(); i++)
+                criterium.appendChild(addCriterium(crit.subcriteriaList.get(i)));
+        }else{
+            Element comparing = documentXML.createElement("comparing");
+            comparing.appendChild(documentXML.createTextNode(stringFromMatrix(crit.matrix)));
+            criterium.appendChild(comparing);
+        }
+        return criterium;
+    }
+
+    String stringFromMatrix(Matrix matrix){
+        String pauze = " ";
+        String result = "";
+
+        //todo Implement
+
+        return result;
     }
 
     void saveToFile(String path){

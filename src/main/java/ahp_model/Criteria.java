@@ -11,7 +11,7 @@ import java.util.List;
 public class Criteria {
 
     public Matrix matrix;
-
+    public String name;
     public boolean hasSubcriteria;
     public List<Criteria> subcriteriaList;
 
