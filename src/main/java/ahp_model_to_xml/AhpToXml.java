@@ -44,9 +44,6 @@ public class AhpToXml {
         rootElement.appendChild(addAlternatives(ahpModel.alternativesList));
         rootElement.appendChild(addCriterias(ahpModel.criteriasList));
 
-
-
-
         //todo: Implement
 
         saveToFile(path);
@@ -79,7 +76,7 @@ public class AhpToXml {
         attr.setValue(crit.name);
         criterium.setAttributeNode(attr);
 
-        if(crit.hasSubcriteria==true){
+        if(crit.hasSubcriteria){
             Element wag = documentXML.createElement("wag");
             wag.appendChild(documentXML.createTextNode(stringFromMatrix(crit.matrix)));
             criterium.appendChild(wag);
@@ -97,8 +94,11 @@ public class AhpToXml {
         String pauze = " ";
         String result = "";
 
-        //todo Implement
-
+        for(int i = 0; i < matrix.getColumnDimension(); i++)
+            for(int j = 0; j < matrix.getRowDimension(); j++){
+                result += Double.toString(matrix.get(i,j));
+                if(!((i==(matrix.getColumnDimension()-1))&&(j==(matrix.getRowDimension()-1)))) result += pauze;
+            }
         return result;
     }
 
