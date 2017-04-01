@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class AHP {
 
-    List<Alternative> alternativesList;
-    List<Criteria> criteriasList;
+    public List<Alternative> alternativesList;
+    public List<Criteria> criteriasList;
 
-    //I guess it is not really neccesery
-    Matrix priorityVector;
+    //I guess it is not really necessery
+    public Matrix priorityVector;
 }

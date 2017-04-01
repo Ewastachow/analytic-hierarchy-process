@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Criteria {
 
-    Matrix matrix;
-    boolean hasSubcriteria;
+    public Matrix matrix;
 
-    List<Criteria> subcriteriaList;
+    public boolean hasSubcriteria;
+    public List<Criteria> subcriteriaList;
 
 }
