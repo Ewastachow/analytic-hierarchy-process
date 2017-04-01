@@ -48,23 +48,6 @@ public class AHP_xml {
         return postorder(criteriaStart,1).vector;
     }
 
-//    private VectorWag postorder(Element element){
-//
-//        if(element.getElementsByTagName("criteria").getLength() == 0){
-//            VectorWag partVectorWag = new VectorWag();
-//            partVectorWag.wag = Double.parseDouble(element.getElementsByTagName("wag").item(0).getTextContent());
-//            partVectorWag.vector = createVectorFromMatrix(createAlternativeMatrix(element));
-//            return partVectorWag;
-//        } else {
-//            NodeList childrenList = element.getChildNodes();
-//            List<VectorWag> criteriaList = new ArrayList<>();
-//            for(int i = 0; i < childrenList.getLength(); i++)
-//                if (childrenList.item(i).getNodeName().equals("criteria"))
-//                    criteriaList.add(postorder((Element)childrenList.item(i)));
-//            return new VectorWag(createDecisionVector(criteriaList),1);
-//        }
-//    }
-
     private VectorWag postorder(Element element, double wagValue){
         if(element.getElementsByTagName("criteria").getLength() == 0){
             VectorWag partVectorWag = new VectorWag();
@@ -137,4 +120,21 @@ public class AHP_xml {
             resultVector[i] = resultVector[i] / suma;
         return resultVector;
     }
+
+//    private VectorWag postorder(Element element){
+//
+//        if(element.getElementsByTagName("criteria").getLength() == 0){
+//            VectorWag partVectorWag = new VectorWag();
+//            partVectorWag.wag = Double.parseDouble(element.getElementsByTagName("wag").item(0).getTextContent());
+//            partVectorWag.vector = createVectorFromMatrix(createAlternativeMatrix(element));
+//            return partVectorWag;
+//        } else {
+//            NodeList childrenList = element.getChildNodes();
+//            List<VectorWag> criteriaList = new ArrayList<>();
+//            for(int i = 0; i < childrenList.getLength(); i++)
+//                if (childrenList.item(i).getNodeName().equals("criteria"))
+//                    criteriaList.add(postorder((Element)childrenList.item(i)));
+//            return new VectorWag(createDecisionVector(criteriaList),1);
+//        }
+//    }
 }
