@@ -15,4 +15,17 @@ public class Criteria {
     public boolean hasSubcriteria;
     public List<Criteria> subcriteriaList;
 
+    public Criteria(Matrix matrix, String name) {
+        this.matrix = matrix;
+        this.name = name;
+        this.hasSubcriteria = false;
+        this.subcriteriaList = null;
+    }
+
+    public Criteria(Matrix matrix, String name, List<Criteria> subcriteriaList) {
+        this.matrix = matrix;
+        this.name = name;
+        this.hasSubcriteria = true;
+        this.subcriteriaList = subcriteriaList;
+    }
 }
