@@ -11,10 +11,7 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -109,6 +106,8 @@ public class AhpToXml {
             DOMSource source = new DOMSource(documentXML);
             StreamResult result = new StreamResult(new File(path));
             // StreamResult result = new StreamResult(System.out);
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apatche.org/xslt}indent-amount","2");
             transformer.transform(source, result);
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();

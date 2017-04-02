@@ -4,15 +4,19 @@ import Jama.Matrix;
 import ahp_model.AHP;
 import ahp_model.Alternative;
 import ahp_model.Criteria;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  * Created by yevvy on 02/04/2017.
  */
-public class MainTestCreateXML {
-    public static void main(String[] args) {
+public class AhpToXmlTest {
+    @Test
+    public void createXmlFromAHP() throws Exception {
         AHP ahpTest = new AHP();
         List<Alternative> altList = new ArrayList<>();
         altList.add(new Alternative(1, "lama"));
@@ -43,7 +47,7 @@ public class MainTestCreateXML {
         ahpTest.criteriasList = critList;
 
         AhpToXml lama = new AhpToXml();
-        lama.createXmlFromAHP(ahpTest,"src/main/resources/createTest1.xml");
-
+        lama.createXmlFromAHP(ahpTest,"src/test/resources/ahp_model_to_xml/createTest2.xml");
     }
+
 }
