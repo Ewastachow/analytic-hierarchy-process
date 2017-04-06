@@ -4,6 +4,7 @@ import Jama.Matrix;
 import ahp_model.AHP;
 import ahp_model.Alternative;
 import ahp_model.Criteria;
+import ahp_model.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class CreateModel {
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
         result.criteriasList = askCriterias(result.alternativesList.size(), new ArrayList<>());
+        checkMatrixes(result.criteriasList, result.alternativesList);
         return result;
     }
 
@@ -75,12 +77,49 @@ public class CreateModel {
         return new Criteria(resultMatrix, critName);
     }
 
-    public void checkMatrixes(){
-        List<String> currentPath = new ArrayList<>();
+    public void checkMatrixes(List<Criteria> critList, List<Alternative> altList){
+//        List<String> currentPath = new ArrayList<>();
+        if(critList!=null){
+            for(Criteria i: critList){
+                checkMatrixes(i.subcriteriaList, altList);
+            }
+            // cos matrix  =askMatrix(stringListFromCritList(critList));
+        }else{
+            // cos matrix  =askMatrix(stringListFromAltList(altList));
+        }
+
     }
 
-    public Matrix askMatrix(){
-        return null;
+    public Matrix askMatrix(List<String> compareList){
+        double[][] matrix = new double[compareList.size()][compareList.size()];
+        for(int i=0; i<compareList.size(); i++){
+            for(int j=i+1; j<(compareList.size()-1); j++){
+                System.out.print("How better is "+ compareList.get(j) + " then " + compareList.get(i) +" \n");
+                String among = scanner.nextLine();
+                matrix[i][j] = Double.parseDouble(among);
+            }
+        }
+        for(int i=0; i<compareList.size(); i++){
+            for(int j=0;  j<compareList.size(); j++){
+                if(i==j) matrix[i][j] = 1;
+                else if(i<j) matrix[i][j] = 1/matrix[j][i];
+            }
+        }
+        return new Matrix(matrix);
+    }
+
+    public List<String> stringListFromCritList(List<Criteria> list){
+        List<String> result = new ArrayList<>();
+        for(Criteria i: list)
+            result.add(i.name);
+        return result;
+    }
+
+    public List<String> stringListFromAltList(List<Alternative> list){
+        List<String> result = new ArrayList<>();
+        for(Alternative i: list)
+            result.add(i.name);
+        return result;
     }
 
 

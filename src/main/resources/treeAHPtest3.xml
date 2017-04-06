@@ -8,6 +8,7 @@
         <!--<alternative id="4">Madryt</alternative>-->
     </alternatives>
     <criterias>
+        
         <criteria name="cost">
             <wag>1 2 0.5 1</wag>
             <criteria name="Living">

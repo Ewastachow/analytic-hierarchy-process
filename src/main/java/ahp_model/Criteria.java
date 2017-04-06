@@ -8,7 +8,7 @@ import java.util.List;
  * Created by yevvy on 26/03/2017.
  */
 
-public class Criteria {
+public class Criteria implements Element{
 
     public Matrix matrix;
     public String name;
