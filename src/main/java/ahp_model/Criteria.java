@@ -12,6 +12,19 @@ public class Criteria {
 
     public Matrix matrix;
     public String name;
+
+//    public Criteria(String name) {
+//        this.name = name;
+//        this.hasSubcriteria = false;
+//        this.subcriteriaList = null;
+//    }
+//
+//    public Criteria(String name, List<Criteria> subcriteriaList) {
+//        this.name = name;
+//        this.hasSubcriteria = true;
+//        this.subcriteriaList = subcriteriaList;
+//    }
+
     public boolean hasSubcriteria;
     public List<Criteria> subcriteriaList;
 

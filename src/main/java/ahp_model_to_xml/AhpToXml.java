@@ -35,7 +35,7 @@ public class AhpToXml {
         }
     }
 
-    void createXmlFromAHP(AHP ahpModel, String path){
+    public void createXmlFromAHP(AHP ahpModel, String path){
         Element rootElement = documentXML.createElement("LAMA");
         documentXML.appendChild(rootElement);
         rootElement.appendChild(addAlternatives(ahpModel.alternativesList));
