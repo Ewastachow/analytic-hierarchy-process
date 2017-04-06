@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<LAMA>
+<alternatives>
+<alternative id="1">lama</alternative>
+<alternative id="2">alpaka</alternative>
+<alternative id="3">opa</alternative>
+</alternatives>
+<criterias>
+    <criteria name="lama">
+        <wag>1.0 1.0 1.0 1.0</wag>
+        <criteria name="lama2">
+            <wag>1.0 1.0 1.0 1.0</wag>
+            <criteria name="lama">
+                <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+            </criteria>
+            <criteria name="lama3">
+                <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+            </criteria>
+        </criteria>
+        <criteria name="nope">
+            <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+        </criteria>
+    </criteria>
+</criterias>
+</LAMA>

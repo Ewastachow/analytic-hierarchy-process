@@ -19,10 +19,7 @@ public class App {
         AhpToXml source = new AhpToXml();
 
         AHP model = cm.startAsking();
-        //todo PATH
-        source.createXmlFromAHP(model,"src/main/resources/tree1.xml");
-
+        source.createXmlFromAHP(model, "src/main/resources/tree1.xml");
     }
-
 
 }
