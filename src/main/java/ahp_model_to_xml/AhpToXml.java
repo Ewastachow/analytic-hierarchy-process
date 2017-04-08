@@ -39,7 +39,7 @@ public class AhpToXml {
         Element rootElement = documentXML.createElement("LAMA");
         documentXML.appendChild(rootElement);
         rootElement.appendChild(addAlternatives(ahpModel.alternativesList));
-        rootElement.appendChild(addCriterias(ahpModel.criteriasList));
+        rootElement.appendChild(addCriterias(ahpModel.mainCriterium));
 
         //todo: Implement
 
@@ -59,11 +59,16 @@ public class AhpToXml {
         return alternatives;
     }
 
-    Element addCriterias(List<Criteria> critList){
-        Element criterias = documentXML.createElement("criterias");
-        for (int i = 0; i < critList.size(); i++)
-            criterias.appendChild(addCriterium(critList.get(i)));
-        return criterias;
+    Element addCriterias(Criteria crit){
+        Element criterium = documentXML.createElement("criteria");
+        if(crit.hasSubcriteria) {
+            Element wag = documentXML.createElement("wag");
+            wag.appendChild(documentXML.createTextNode(stringFromMatrix(crit.matrix)));
+            criterium.appendChild(wag);
+        }
+        for (int i = 0; i < crit.subcriteriaList.size(); i++)
+            criterium.appendChild(addCriterium(crit.subcriteriaList.get(i)));
+        return criterium;
     }
 
     Element addCriterium(Criteria crit){

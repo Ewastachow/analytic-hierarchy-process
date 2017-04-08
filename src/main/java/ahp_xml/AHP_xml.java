@@ -42,7 +42,7 @@ public class AHP_xml {
     public double[] createVectorWag() {
 
         Element root = documentXML.getDocumentElement();
-        Element criteriaStart = (Element)root.getElementsByTagName("criterias").item(0);
+        Element criteriaStart = (Element)root.getElementsByTagName("criteria").item(0);
         return postorder(criteriaStart,1).vector;
     }
 

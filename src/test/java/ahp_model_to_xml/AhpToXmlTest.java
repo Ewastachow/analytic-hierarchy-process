@@ -44,7 +44,8 @@ public class AhpToXmlTest {
         List<Criteria> critList = new ArrayList<>();
         critList.add(new Criteria(new Matrix(matrix1),"hasSubcrit", subcritList));
         critList.add(new Criteria(new Matrix(matrix2), "telast"));
-        ahpTest.criteriasList = critList;
+        Criteria crit = new Criteria(new Matrix(matrix1), "start", critList);
+        ahpTest.mainCriterium = crit;
 
         AhpToXml lama = new AhpToXml();
         lama.createXmlFromAHP(ahpTest,"src/test/resources/ahp_model_to_xml/createTest2.xml");

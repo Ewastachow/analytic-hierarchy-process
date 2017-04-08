@@ -10,7 +10,7 @@ import java.util.List;
 public class AHP {
 
     public List<Alternative> alternativesList;
-    public List<Criteria> criteriasList;
+    public Criteria mainCriterium;
 
     //I guess it is not really necessery
     public Matrix priorityVector;

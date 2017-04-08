@@ -24,8 +24,8 @@ public class CreateModel {
     public AHP startAsking(){ //todo
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
-        result.criteriasList = askCriterias(result.alternativesList.size(), new ArrayList<>());
-        checkMatrixes(result.criteriasList, result.alternativesList);
+        result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
+        checkMatrixes(result.mainCriterium, result.alternativesList);
         return result;
     }
 
@@ -77,8 +77,8 @@ public class CreateModel {
         return new Criteria(resultMatrix, critName);
     }
 
-    public void checkMatrixes(List<Criteria> critList, List<Alternative> altList){
-//        List<String> currentPath = new ArrayList<>();
+    public void checkMatrixes(Criteria crit, List<Alternative> altList){
+/*//        List<String> currentPath = new ArrayList<>();
         if(critList!=null){
             for(Criteria i: critList){
                 checkMatrixes(i.subcriteriaList, altList);
@@ -86,7 +86,7 @@ public class CreateModel {
             // cos matrix  =askMatrix(stringListFromCritList(critList));
         }else{
             // cos matrix  =askMatrix(stringListFromAltList(altList));
-        }
+        }*/
 
     }
 
