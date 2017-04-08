@@ -24,7 +24,9 @@ public class CreateModel {
     public AHP startAsking(){ //todo
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
+        //todo : first crit created automaticly
         result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
+        //todo : adding matrixes
         checkMatrixes(result.mainCriterium, result.alternativesList);
         return result;
     }
