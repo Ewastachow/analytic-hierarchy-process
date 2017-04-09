@@ -4,18 +4,13 @@
 <alternative id="1">lama</alternative>
 <alternative id="2">alpaka</alternative>
 </alternatives>
-<criterias>
-<criteria name="lama">
+<criteria>
 <wag>1.0 1.0 1.0 1.0</wag>
-<criteria name="apaka">
-<wag>1.0</wag>
 <criteria name="lama">
 <comparing>1.0 1.0 1.0 1.0</comparing>
 </criteria>
-</criteria>
-<criteria name="yr">
+<criteria name="alpaka">
 <comparing>1.0 1.0 1.0 1.0</comparing>
 </criteria>
 </criteria>
-</criterias>
 </LAMA>

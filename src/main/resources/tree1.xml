@@ -3,26 +3,25 @@
 <alternatives>
 <alternative id="1">lama</alternative>
 <alternative id="2">alpaka</alternative>
-<alternative id="3">lamolandia</alternative>
 </alternatives>
 <criteria>
-    <wag>1.0 1.0 1.0 1.0</wag>
-    <criteria name="soma">
+    <wag>1.0</wag>
+    <criteria name="alpaka">
         <wag>1.0 1.0 1.0 1.0</wag>
-        <criteria name="aaaa">
-            <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+        <criteria name="lama1">
+            <comparing>1.0 1.0 1.0 1.0</comparing>
         </criteria>
-        <criteria name="fiona">
-            <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+        <criteria name="lama2">
+            <comparing>1.0 1.0 1.0 1.0</comparing>
         </criteria>
     </criteria>
-    <criteria name="opoka">
+    <criteria name="opa">
         <wag>1.0 1.0 1.0 1.0</wag>
-        <criteria name="opa">
-            <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+        <criteria name="lama">
+            <comparing>1.0 1.0 1.0 1.0</comparing>
         </criteria>
-        <criteria name="omam">
-            <comparing>1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</comparing>
+        <criteria name="lama23">
+            <comparing>1.0 1.0 1.0 1.0</comparing>
         </criteria>
     </criteria>
 </criteria>

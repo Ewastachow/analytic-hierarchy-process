@@ -7,6 +7,7 @@ import ahp_model.Criteria;
 import ahp_model.Element;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +26,8 @@ public class CreateModel {
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
         //todo : first crit created automaticly
-        result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
+        result.mainCriterium = new Criteria(new Matrix(1,1,1),"start",askCriterias(result.alternativesList.size(), Arrays.asList("start")));
+        //result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
         //todo : adding matrixes
         checkMatrixes(result.mainCriterium, result.alternativesList);
         return result;

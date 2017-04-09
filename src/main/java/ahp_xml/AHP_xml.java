@@ -55,13 +55,26 @@ public class AHP_xml {
         } else {
             NodeList childrenList = element.getChildNodes();
             List<VectorWag> criteriaList = new ArrayList<>();
-            double[] subcriteriasWagVeector = createVectorFromMatrix(createAlternativeMatrix(element, "wag"));
+            int tabSize = 0;
+            for(int i = 0; i < childrenList.getLength(); i++)
+                if(childrenList.item(i).getNodeName().equals("criteria"))
+                    tabSize++;
+            double[] tmpVector = createVectorFromMatrix(createAlternativeMatrix(element, "wag"));
+
+            double[] subcriteriasWagVeector = new double[tabSize];
+
+            for(int i = 0; i< subcriteriasWagVeector.length; i++)
+                if(tmpVector.length > i) subcriteriasWagVeector[i] = tmpVector[i];
+                else subcriteriasWagVeector[i] = 0;
+
             int tabIterator = 0;
             for(int i = 0; i < childrenList.getLength(); i++)
                 if (childrenList.item(i).getNodeName().equals("criteria")){
+                    System.out.print("vector size: " + subcriteriasWagVeector.length + " ; TabIt:  "  + tabIterator + "\n");
                     criteriaList.add(postorder((Element)childrenList.item(i), subcriteriasWagVeector[tabIterator]));
                     tabIterator++;
                 }
+            System.out.print("Lama \n");
             return new VectorWag(createDecisionVector(criteriaList),1);
         }
     }
