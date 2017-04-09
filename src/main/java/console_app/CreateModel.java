@@ -5,11 +5,14 @@ import ahp_model.AHP;
 import ahp_model.Alternative;
 import ahp_model.Criteria;
 import ahp_model.Element;
+import ahp_xml.AHPConsistency;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import static ahp_xml.AHPConsistency.checkConsistency;
 
 /**
  * Created by yevvy on 02/04/2017.
@@ -110,7 +113,12 @@ public class CreateModel {
                 else if(i>j) matrix[i][j] = 1/matrix[j][i];
             }
         }
-        return new Matrix(matrix);
+        Matrix result = new Matrix(matrix);
+        if(!checkConsistency(result, 0.1)){
+            System.out.print("Wrong!!!! Try once again \n");
+            return askMatrix(compareList);
+        }
+        return result;
     }
 
     public List<String> stringListFromCritList(List<Criteria> list){

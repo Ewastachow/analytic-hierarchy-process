@@ -3,11 +3,12 @@
 <alternatives>
 <alternative id="1">lama</alternative>
 <alternative id="2">alpaka</alternative>
+<alternative id="3">opaa</alternative>
 </alternatives>
 <criteria>
 <wag>1.0</wag>
-<criteria name="lama">
-<comparing>1.0 3.0 0.3333333333333333 1.0</comparing>
+<criteria name="papapa">
+<comparing>1.0 2.0 4.0 0.5 1.0 2.0 0.25 0.5 1.0</comparing>
 </criteria>
 </criteria>
 </LAMA>
