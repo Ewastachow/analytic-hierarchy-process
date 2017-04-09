@@ -22,10 +22,9 @@ public class CreateModel {
         scanner = new Scanner(System.in);
     }
 
-    public AHP startAsking(){ //todo
+    public AHP startAsking(){
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
-        //todo : first crit created automaticly
         result.mainCriterium = new Criteria(new Matrix(1,1,1),"start",askCriterias(result.alternativesList.size(), Arrays.asList("start")));
         //result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
         //todo : adding matrixes
@@ -82,31 +81,33 @@ public class CreateModel {
     }
 
     public void checkMatrixes(Criteria crit, List<Alternative> altList){
-/*//        List<String> currentPath = new ArrayList<>();
-        if(critList!=null){
-            for(Criteria i: critList){
-                checkMatrixes(i.subcriteriaList, altList);
-            }
-            // cos matrix  =askMatrix(stringListFromCritList(critList));
-        }else{
-            // cos matrix  =askMatrix(stringListFromAltList(altList));
-        }*/
 
+        if(crit.hasSubcriteria){
+//            System.out.print("[ "+crit.name+" ] Compare Criteria \n");
+            crit.matrix = askMatrix(stringListFromCritList(crit.subcriteriaList));
+            for(Criteria i : crit.subcriteriaList)
+                checkMatrixes(i,altList);
+        }else{
+//            System.out.print("[ "+crit.name+" ] Compare Alternative \n");
+            crit.matrix = askMatrix(stringListFromAltList(altList));
+        }
     }
 
     public Matrix askMatrix(List<String> compareList){
         double[][] matrix = new double[compareList.size()][compareList.size()];
         for(int i=0; i<compareList.size(); i++){
-            for(int j=i+1; j<(compareList.size()-1); j++){
+            for(int j=i+1; j<compareList.size(); j++){
                 System.out.print("How better is "+ compareList.get(j) + " then " + compareList.get(i) +" \n");
-                String among = scanner.nextLine();
-                matrix[i][j] = Double.parseDouble(among);
+//                String among = scanner.nextLine();
+//                matrix[i][j] = Double.parseDouble(among);
+                Double among = scanner.nextDouble();
+                matrix[i][j] = among;
             }
         }
         for(int i=0; i<compareList.size(); i++){
             for(int j=0;  j<compareList.size(); j++){
                 if(i==j) matrix[i][j] = 1;
-                else if(i<j) matrix[i][j] = 1/matrix[j][i];
+                else if(i>j) matrix[i][j] = 1/matrix[j][i];
             }
         }
         return new Matrix(matrix);

@@ -70,11 +70,11 @@ public class AHP_xml {
             int tabIterator = 0;
             for(int i = 0; i < childrenList.getLength(); i++)
                 if (childrenList.item(i).getNodeName().equals("criteria")){
-                    System.out.print("vector size: " + subcriteriasWagVeector.length + " ; TabIt:  "  + tabIterator + "\n");
+//                    System.out.print("vector size: " + subcriteriasWagVeector.length + " ; TabIt:  "  + tabIterator + "\n");
                     criteriaList.add(postorder((Element)childrenList.item(i), subcriteriasWagVeector[tabIterator]));
                     tabIterator++;
                 }
-            System.out.print("Lama \n");
+//            System.out.print("Lama \n");
             return new VectorWag(createDecisionVector(criteriaList),1);
         }
     }
