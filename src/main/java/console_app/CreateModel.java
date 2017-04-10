@@ -29,19 +29,18 @@ public class CreateModel {
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
         result.mainCriterium = new Criteria(new Matrix(1,1,1),"start",askCriterias(result.alternativesList.size(), Arrays.asList("start")));
-        //result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
-        //todo : adding matrixes
         System.out.print("Set consistency ratio:");
         double ratio = scanner.nextDouble();
         checkMatrixes(result.mainCriterium, result.alternativesList, ratio);
         return result;
     }
 
-    public List<Alternative> askAlternatives(){
+    private List<Alternative> askAlternatives(){
         List<Alternative> result = new ArrayList<>();
         String ifNewAlt = null;
-        System.out.print("Do you want to add new alternative? [y/n] \n");
-        ifNewAlt = scanner.nextLine();
+//        System.out.print("Do you want to add new alternative? [y/n] \n");
+//        ifNewAlt = scanner.nextLine();
+        ifNewAlt = "y";
         while(!ifNewAlt.contains("n")){
             result.add(askAlternative(result.size()));
             System.out.print("Do you want to add new alternative? [y/n] \n");
@@ -50,13 +49,13 @@ public class CreateModel {
         return result;
     }
 
-    public Alternative askAlternative(int id){
+    private Alternative askAlternative(int id){
         System.out.print("Write alternative name \n");
         String altName = scanner.nextLine();
         return new Alternative(id+1, altName);
     }
 
-    public List<Criteria> askCriterias(int altNumber, List<String> path){
+    private List<Criteria> askCriterias(int altNumber, List<String> path){
         System.out.print(path.toString()+"\n");
         List<Criteria> result = new ArrayList<>();
         String ifNewCrit = "y";
@@ -69,7 +68,7 @@ public class CreateModel {
         return result;
     }
 
-    public Criteria askCriterium(int altNumber, List<String> path){
+    private Criteria askCriterium(int altNumber, List<String> path){
         System.out.print("Write criterium name \n");
         String critName = scanner.nextLine();
         System.out.print("Do you want to add subcriteria? [y/n] \n");
@@ -85,7 +84,7 @@ public class CreateModel {
         return new Criteria(resultMatrix, critName);
     }
 
-    public void checkMatrixes(Criteria crit, List<Alternative> altList, double ratio){
+    private void checkMatrixes(Criteria crit, List<Alternative> altList, double ratio){
 
         if(crit.hasSubcriteria){
             System.out.print("[ "+crit.name+" ] Compare Criteria \n");
@@ -98,13 +97,11 @@ public class CreateModel {
         }
     }
 
-    public Matrix askMatrix(List<String> compareList, double ratio){
+    private Matrix askMatrix(List<String> compareList, double ratio){
         double[][] matrix = new double[compareList.size()][compareList.size()];
         for(int i=0; i<compareList.size(); i++){
             for(int j=i+1; j<compareList.size(); j++){
-                System.out.print("How better is "+ compareList.get(j) + " then " + compareList.get(i) +" \n");
-//                String among = scanner.nextLine();
-//                matrix[i][j] = Double.parseDouble(among);
+                System.out.print("How better is "+ compareList.get(i) + " then " + compareList.get(j) +" \n");
                 Double among = scanner.nextDouble();
                 matrix[i][j] = among;
             }
@@ -123,14 +120,14 @@ public class CreateModel {
         return result;
     }
 
-    public List<String> stringListFromCritList(List<Criteria> list){
+    private List<String> stringListFromCritList(List<Criteria> list){
         List<String> result = new ArrayList<>();
         for(Criteria i: list)
             result.add(i.name);
         return result;
     }
 
-    public List<String> stringListFromAltList(List<Alternative> list){
+    private List<String> stringListFromAltList(List<Alternative> list){
         List<String> result = new ArrayList<>();
         for(Alternative i: list)
             result.add(i.name);

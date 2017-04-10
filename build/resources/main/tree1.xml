@@ -2,12 +2,12 @@
 <LAMA>
 <alternatives>
 <alternative id="1">lama</alternative>
-<alternative id="2">alpaa</alternative>
+<alternative id="2">alpaka</alternative>
 </alternatives>
 <criteria>
 <wag>1.0</wag>
-<criteria name="lama">
-<comparing>1.0 2.0 0.5 1.0</comparing>
+<criteria name="opoa">
+<comparing>1.0 4.0 0.25 1.0</comparing>
 </criteria>
 </criteria>
 </LAMA>
