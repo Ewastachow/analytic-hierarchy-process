@@ -19,7 +19,8 @@ public class AHPConsistency {
     }
 
     private static double consistencyIndex(Matrix matrix) {
-        return ((findMaxEingenvalue(matrix)-matrix.getColumnDimension())/(matrix.getColumnDimension()-1));
+        int size = matrix.getColumnDimension();
+        return ((findMaxEingenvalue(matrix)-size)/(size-1));
     }
 
     private static double findMaxEingenvalue(Matrix matrix) {

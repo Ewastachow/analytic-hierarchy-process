@@ -38,8 +38,6 @@ public class CreateModel {
     private List<Alternative> askAlternatives(){
         List<Alternative> result = new ArrayList<>();
         String ifNewAlt = null;
-//        System.out.print("Do you want to add new alternative? [y/n] \n");
-//        ifNewAlt = scanner.nextLine();
         ifNewAlt = "y";
         while(!ifNewAlt.contains("n")){
             result.add(askAlternative(result.size()));

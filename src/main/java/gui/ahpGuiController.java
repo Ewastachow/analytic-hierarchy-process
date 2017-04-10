@@ -58,6 +58,5 @@ public class ahpGuiController {
         assert deleteAlternativeButton != null : "fx:id=\"deleteAlternativeButton\" was not injected: check your FXML file 'ahp_skeleton.fxml'.";
         assert criteriasTreeView != null : "fx:id=\"criteriasTreeView\" was not injected: check your FXML file 'ahp_skeleton.fxml'.";
         assert matrixGridPane != null : "fx:id=\"matrixGridPane\" was not injected: check your FXML file 'ahp_skeleton.fxml'.";
-
     }
 }
