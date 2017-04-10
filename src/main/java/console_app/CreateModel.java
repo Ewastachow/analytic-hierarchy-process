@@ -31,7 +31,9 @@ public class CreateModel {
         result.mainCriterium = new Criteria(new Matrix(1,1,1),"start",askCriterias(result.alternativesList.size(), Arrays.asList("start")));
         //result.mainCriterium = askCriterium(result.alternativesList.size(), new ArrayList<>());
         //todo : adding matrixes
-        checkMatrixes(result.mainCriterium, result.alternativesList);
+        System.out.print("Set consistency ratio:");
+        double ratio = scanner.nextDouble();
+        checkMatrixes(result.mainCriterium, result.alternativesList, ratio);
         return result;
     }
 
@@ -83,20 +85,20 @@ public class CreateModel {
         return new Criteria(resultMatrix, critName);
     }
 
-    public void checkMatrixes(Criteria crit, List<Alternative> altList){
+    public void checkMatrixes(Criteria crit, List<Alternative> altList, double ratio){
 
         if(crit.hasSubcriteria){
-//            System.out.print("[ "+crit.name+" ] Compare Criteria \n");
-            crit.matrix = askMatrix(stringListFromCritList(crit.subcriteriaList));
+            System.out.print("[ "+crit.name+" ] Compare Criteria \n");
+            crit.matrix = askMatrix(stringListFromCritList(crit.subcriteriaList), ratio);
             for(Criteria i : crit.subcriteriaList)
-                checkMatrixes(i,altList);
+                checkMatrixes(i,altList, ratio);
         }else{
-//            System.out.print("[ "+crit.name+" ] Compare Alternative \n");
-            crit.matrix = askMatrix(stringListFromAltList(altList));
+            System.out.print("[ "+crit.name+" ] Compare Alternative \n");
+            crit.matrix = askMatrix(stringListFromAltList(altList), ratio);
         }
     }
 
-    public Matrix askMatrix(List<String> compareList){
+    public Matrix askMatrix(List<String> compareList, double ratio){
         double[][] matrix = new double[compareList.size()][compareList.size()];
         for(int i=0; i<compareList.size(); i++){
             for(int j=i+1; j<compareList.size(); j++){
@@ -114,9 +116,9 @@ public class CreateModel {
             }
         }
         Matrix result = new Matrix(matrix);
-        if(!checkConsistency(result, 0.1)){
+        if(!checkConsistency(result, ratio)){
             System.out.print("Wrong!!!! Try once again \n");
-            return askMatrix(compareList);
+            return askMatrix(compareList, ratio);
         }
         return result;
     }

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <LAMA>
 <alternatives>
-<alternative id="1">n</alternative>
+<alternative id="1">lama</alternative>
+<alternative id="2">alpaka</alternative>
+<alternative id="3">opa</alternative>
 </alternatives>
 <criteria>
-<wag>1.0</wag>
-<criteria name="n">
-<comparing>1.0</comparing>
+<wag>1.0 2.0 0.5 1.0</wag>
+<criteria name="lama">
+<wag>1.0 2.0 0.5 1.0</wag>
+<criteria name="alpa">
+<comparing>1.0 2.0 4.0 0.5 1.0 2.0 0.25 0.5 1.0</comparing>
+</criteria>
+<criteria name="papa">
+<comparing>1.0 2.0 4.0 0.5 1.0 2.0 0.25 0.5 1.0</comparing>
+</criteria>
+</criteria>
+<criteria name="papapapapa">
+<comparing>1.0 2.0 2.0 0.5 1.0 2.0 0.5 0.5 1.0</comparing>
 </criteria>
 </criteria>
 </LAMA>
