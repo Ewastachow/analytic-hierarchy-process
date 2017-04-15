@@ -41,4 +41,9 @@ public class Criteria implements Element{
         this.hasSubcriteria = true;
         this.subcriteriaList = subcriteriaList;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
