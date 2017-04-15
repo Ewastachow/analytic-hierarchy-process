@@ -2,15 +2,21 @@
 <LAMA>
 <alternatives>
 <alternative id="1">lama</alternative>
-<alternative id="2">alpaka</alternative>
+<alternative id="2">alap</alternative>
 </alternatives>
 <criteria>
-<wag>1.0 1.0 1.0 1.0</wag>
+<wag>1.0 2.0 0.5 1.0</wag>
 <criteria name="lama">
-<comparing>1.0 1.0 1.0 1.0</comparing>
+<wag>1.0 3.0 0.3333333333333333 1.0</wag>
+<criteria name="lalala">
+<comparing>1.0 4.0 0.25 1.0</comparing>
 </criteria>
-<criteria name="alpaka">
-<comparing>1.0 1.0 1.0 1.0</comparing>
+<criteria name="alalala">
+<comparing>1.0 5.0 0.2 1.0</comparing>
+</criteria>
+</criteria>
+<criteria name="lalalalalallalala">
+<comparing>1.0 6.0 0.16666666666666666 1.0</comparing>
 </criteria>
 </criteria>
 </LAMA>

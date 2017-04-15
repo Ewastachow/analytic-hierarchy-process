@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AhpSingleSkeleton">
+<AnchorPane fx:id="rootPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AhpGuiView">
    <children>
-      <TreeView fx:id="criteriasTreeView" layoutX="14.0" layoutY="80.0" prefHeight="234.0" prefWidth="200.0" />
-      <TreeView fx:id="alternativesTreeView" layoutX="225.0" layoutY="80.0" prefHeight="234.0" prefWidth="200.0" />
-      <Button layoutX="88.0" layoutY="444.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="299.0" layoutY="444.0" mnemonicParsing="false" text="Button" />
+      <TreeView fx:id="criteriasTreeView" layoutX="230.0" layoutY="80.0" onEditCancel="#criteriasTreeViewEditCancel" onEditCommit="#criteriasTreeViewEditCommit" onEditStart="#criteriasTreeViewEditStart" prefHeight="234.0" prefWidth="200.0" />
+      <TreeView fx:id="alternativesTreeView" layoutX="19.0" layoutY="80.0" onEditCancel="#alternativesTreeViewEditCancel" onEditCommit="#alternativesTreeViewEditCommit" onEditStart="#alternativesTreeViewEditStart" prefHeight="234.0" prefWidth="200.0" />
+      <Button layoutX="88.0" layoutY="431.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="299.0" layoutY="431.0" mnemonicParsing="false" text="Button" />
       <Button fx:id="applyMatrix" layoutX="576.0" layoutY="444.0" mnemonicParsing="false" text="Apply" />
       <Label fx:id="alternativesLabel" alignment="CENTER" contentDisplay="CENTER" ellipsisString="2" graphicTextGap="6.0" layoutX="14.0" layoutY="14.0" lineSpacing="2.0" prefHeight="46.0" prefWidth="200.0" text="Alternatives" textAlignment="CENTER" wrapText="true">
          <font>
@@ -24,6 +24,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <FlowPane layoutX="480.0" layoutY="80.0" prefHeight="300.0" prefWidth="300.0" />
+      <FlowPane fx:id="matrixFlowPane" layoutX="480.0" layoutY="80.0" prefHeight="300.0" prefWidth="300.0" />
    </children>
 </AnchorPane>
