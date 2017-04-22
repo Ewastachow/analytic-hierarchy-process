@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class AhpController {
@@ -24,8 +25,12 @@ public class AhpController {
     TreeItem<Criteria> rootCriteriaTree;
     TreeItem<Criteria> currentSelectedCriterium;
 
-    AhpViewToModel controller = new AhpViewToModel(0.1);
-    AHP ahp = new AHP();
+    AhpViewToModel controller = new AhpViewToModel();
+    static AHP ahp = new AHP();
+    public double consistencyRatio;
+
+    double[][] currentMatrix;
+    Label[][] currentRectangleMatrix;
 
     @FXML
     private ResourceBundle resources;
@@ -149,26 +154,28 @@ public class AhpController {
     @FXML
     void init2(MouseEvent event) {
         rootAlternativeItem = new TreeItem<>("Alternatives");
-//        alternativeTreeView_2.setShowRoot(false);
         alternativeTreeView_2.setRoot(rootAlternativeItem);
+        rootAlternativeItem.setExpanded(true);
 
         rootCriteriaItem = new TreeItem<>("Criterias");
-//        criteriaTreeView_2.setShowRoot(false);
         criteriaTreeView_2.setRoot(rootCriteriaItem);
+        rootCriteriaItem.setExpanded(true);
     }
 
     @FXML
     void addButtonAction_2(ActionEvent event) {
+        TreeItem<String> newObject = new TreeItem<>(nameTextField_2.getText());
+        newObject.setExpanded(true);
         try{
             if (currentSelectedTreeItem != null && !nameTextField_2.getText().equals("")) {
                 if (currentSelectedTreeItem.equals(rootAlternativeItem) ||
                         currentSelectedTreeItem.getParent().equals(rootAlternativeItem))
-                    rootAlternativeItem.getChildren().add(new TreeItem<>(nameTextField_2.getText()));
-                else currentSelectedTreeItem.getChildren().add(new TreeItem<>(nameTextField_2.getText()));
+                    rootAlternativeItem.getChildren().add(newObject);
+                else currentSelectedTreeItem.getChildren().add(newObject);
             }
             nameTextField_2.clear();
         }catch (Exception e){
-            currentSelectedTreeItem.getChildren().add(new TreeItem<>(nameTextField_2.getText()));
+            currentSelectedTreeItem.getChildren().add(newObject);
             nameTextField_2.clear();
         }
     }
@@ -198,9 +205,11 @@ public class AhpController {
 
     @FXML
     void changeConsistencyButtonAction_3(ActionEvent event) {
-        controller.consistencyRatio = Double.parseDouble(ratioTextField_3.getText());
-        ratioLabel_3.setText(String.valueOf(controller.consistencyRatio));
-        ratioTextField_3.clear();
+        if(!ratioTextField_3.getText().isEmpty()){
+            consistencyRatio = Double.parseDouble(ratioTextField_3.getText());
+            ratioLabel_3.setText(String.valueOf(consistencyRatio));
+            ratioTextField_3.clear();
+        }
     }
 
     @FXML
@@ -215,11 +224,20 @@ public class AhpController {
 
     @FXML
     void init3(MouseEvent event) {
-        ratioLabel_3.setText(String.valueOf(controller.consistencyRatio));
+        ratioLabel_3.setText(String.valueOf(consistencyRatio));
 
-        rootCriteriaTree = new TreeItem<>(ahp.mainCriterium);
+//        rootCriteriaTree = new TreeItem<>(ahp.mainCriterium);
+        rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
 //        criteriaTreeView_2.setShowRoot(false);
         criteriaTreeView_3.setRoot(rootCriteriaTree);
+    }
+
+    TreeItem<Criteria> createCriteriaItem(Criteria crit){
+        TreeItem<Criteria> result = new TreeItem<>(crit);
+        if(crit.hasSubcriteria)
+            for(Criteria i : crit.subcriteriaList)
+                result.getChildren().add(createCriteriaItem(i));
+        return result;
     }
 
     @FXML
@@ -241,7 +259,6 @@ public class AhpController {
         assert removeButton_2 != null : "fx:id=\"removeButton_2\" was not injected: check your FXML file 'ahp_skeleton_2_set_criteria.fxml'.";
         assert addButton_2 != null : "fx:id=\"addButton_2\" was not injected: check your FXML file 'ahp_skeleton_2_set_criteria.fxml'.";
         assert nextButton_2 != null : "fx:id=\"nextButton_2\" was not injected: check your FXML file 'ahp_skeleton_2_set_criteria.fxml'.";
-
         assert mainLabel_3 != null : "fx:id=\"mainLabel_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert manPane_3 != null : "fx:id=\"manPane_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert criteriaTreeView_3 != null : "fx:id=\"criteriaTreeView_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";

@@ -14,12 +14,6 @@ import java.util.List;
  */
 public class AhpViewToModel {
 
-    public double consistencyRatio;
-
-    public AhpViewToModel(double consistencyRatio) {
-        this.consistencyRatio = consistencyRatio;
-    }
-
     public Criteria criteriasTreeToModel(TreeItem<String> treeItem){
         Criteria result;
         int size = treeItem.getChildren().size();
