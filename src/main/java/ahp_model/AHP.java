@@ -14,4 +14,10 @@ public class AHP {
 
     //I guess it is not really necessery
     public Matrix priorityVector;
+
+//    public AHP(String string) {
+//        mainCriterium = new Criteria(new Matrix(0,0), "")
+//    }
+
+
 }

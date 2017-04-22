@@ -17,7 +17,8 @@ public class GUIAHP extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("ahp_single_skeleton.fxml"));
+//        loader.setLocation(this.getClass().getResource("ahp_single_skeleton.fxml"));
+        loader.setLocation(this.getClass().getResource("ahp_skeleton_1_welcome.fxml"));
 
         Pane pane = loader.load();
 

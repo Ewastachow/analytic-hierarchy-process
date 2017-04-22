@@ -60,6 +60,9 @@ public class AhpGuiView {
             else currentSelectedTreeItem.getChildren().add(new TreeItem<>(nameTextField.getText()));
         }
         nameTextField.clear();
+        //todo Increase matrix size;
+        //todo Add element to the end of the list in ahp;
+
     }
 
     @FXML
@@ -146,9 +149,6 @@ public class AhpGuiView {
         rootCriteriaItem.getChildren().add(new TreeItem<>((rootAlternativeItem.getChildren().size()+1)+" "+"Lama"));
         rootCriteriaItem.getChildren().add(new TreeItem<>((rootAlternativeItem.getChildren().size()+1)+" "+"Alpaka"));
         rootCriteriaItem.getChildren().add(new TreeItem<>((rootAlternativeItem.getChildren().size()+1)+" "+"Foka"));
-
-
-
 
     }
 }
