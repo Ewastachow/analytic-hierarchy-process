@@ -9,22 +9,22 @@
 
 <AnchorPane maxHeight="500.0" maxWidth="800.0" minHeight="500.0" minWidth="800.0" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AhpController">
    <children>
-      <Label fx:id="mainLabel_3" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" style="-fx-background-color: #d9d9d9;" text="Label" textAlignment="CENTER" textFill="#787878" />
+      <Label fx:id="mainLabel_3" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#init3" prefHeight="50.0" prefWidth="800.0" style="-fx-background-color: #d9d9d9;" text="Label" textAlignment="CENTER" textFill="#787878" />
       <Pane fx:id="manPane_3" layoutY="50.0" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2;">
          <children>
             <TreeView fx:id="criteriaTreeView_3" layoutX="14.0" layoutY="56.0" onMouseClicked="#criteriaTreeViewClicked_3" prefHeight="330.0" prefWidth="300.0" style="-fx-border-color: white;" />
             <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="43.0" prefWidth="300.0" style="-fx-background-color: d9d9d9;" text="Criterias" />
-            <Button layoutX="345.0" layoutY="167.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="110.0" text="Check consistency" textAlignment="CENTER" wrapText="true" />
-            <Button layoutX="345.0" layoutY="57.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="110.0" text="Set dependencies" textAlignment="CENTER" wrapText="true" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="486.0" layoutY="13.0" prefHeight="205.0" prefWidth="300.0" style="-fx-background-color: #d9d9d9;" textAlignment="CENTER" wrapText="true" />
-            <TextField layoutX="546.0" layoutY="269.0" prefHeight="40.0" prefWidth="100.0" />
+            <Button fx:id="checkConsistencyButton_3" layoutX="345.0" layoutY="167.0" mnemonicParsing="false" onAction="#checkConsistencyButtonAction_3" prefHeight="66.0" prefWidth="110.0" text="Check consistency" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="setDependenciesButton_3" layoutX="345.0" layoutY="57.0" mnemonicParsing="false" onAction="#setDependenciesButtonAction_3" prefHeight="66.0" prefWidth="110.0" text="Set dependencies" textAlignment="CENTER" wrapText="true" />
+            <Label fx:id="questioningLabel_3" alignment="CENTER" contentDisplay="CENTER" layoutX="486.0" layoutY="13.0" prefHeight="220.0" prefWidth="300.0" style="-fx-background-color: #d9d9d9;" textAlignment="CENTER" wrapText="true" />
+            <TextField fx:id="answerTextField_3" layoutX="546.0" layoutY="269.0" prefHeight="40.0" prefWidth="100.0" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="546.0" layoutY="335.0" prefHeight="43.0" prefWidth="140.0" style="-fx-background-color: #d9d9d9;" text="Matrix Consistency" textAlignment="CENTER" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="686.0" layoutY="335.0" prefHeight="43.0" prefWidth="56.0" style="-fx-background-color: #d9d9d9;" textAlignment="CENTER" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="371.0" layoutY="269.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="100.0" text="Change consistency ratio" textAlignment="CENTER" wrapText="true" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="328.0" layoutY="335.0" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #d9d9d9;" text="Cons Ratio" textAlignment="CENTER" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="428.0" layoutY="335.0" prefHeight="30.0" prefWidth="44.0" style="-fx-background-color: #d9d9d9;" textAlignment="CENTER" />
-            <TextField layoutX="328.0" layoutY="269.0" prefHeight="66.0" prefWidth="44.0" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="646.0" layoutY="269.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Apply" textAlignment="CENTER" wrapText="true" />
+            <Label fx:id="consistencyLabel_3" alignment="CENTER" contentDisplay="CENTER" layoutX="686.0" layoutY="335.0" prefHeight="43.0" prefWidth="56.0" style="-fx-background-color: #d9d9d9;" textAlignment="CENTER" />
+            <Button fx:id="changeConsistencyButton_3" alignment="CENTER" contentDisplay="CENTER" layoutX="372.0" layoutY="269.0" mnemonicParsing="false" onAction="#changeConsistencyButtonAction_3" prefHeight="66.0" prefWidth="100.0" text="Change consistency ratio" textAlignment="CENTER" wrapText="true" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="328.0" layoutY="335.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #d9d9d9;" text="Cons Ratio" textAlignment="CENTER" />
+            <Label fx:id="ratioLabel_3" alignment="CENTER" contentDisplay="CENTER" layoutX="428.0" layoutY="335.0" prefHeight="40.0" prefWidth="44.0" style="-fx-background-color: #d9d9d9;" textAlignment="CENTER" />
+            <TextField fx:id="ratioTextField_3" layoutX="328.0" layoutY="269.0" prefHeight="66.0" prefWidth="44.0" />
+            <Button fx:id="applyButton_3" alignment="CENTER" contentDisplay="CENTER" layoutX="646.0" layoutY="269.0" mnemonicParsing="false" onAction="#applyButtonAction_3" prefHeight="40.0" prefWidth="100.0" text="Apply" textAlignment="CENTER" wrapText="true" />
          </children></Pane>
       <Button fx:id="nextButton_3" layoutY="450.0" mnemonicParsing="false" onAction="#nextButtonOnAction" prefHeight="50.0" prefWidth="800.0" style="-fx-background-color: #d9d9d9; -fx-border-color: white;" text="Next" textFill="#787878" />
    </children>
