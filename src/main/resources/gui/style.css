@@ -1,0 +1,15 @@
+.buttonNext{
+    -fx-background-color: #a7adbe;
+}
+
+.panel{
+    -fx-background-color: #f2f2f2;
+}
+
+.labelSide{
+    -fx-background-color: white;
+}
+
+.treeView{
+    -fx-background-color: white;
+}

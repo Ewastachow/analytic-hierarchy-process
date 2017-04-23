@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ahp_model_to_xml.AhpToXmlTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-04-15T15:31:19" hostname="YevvYe" time="0.384">
+<testsuite name="ahp_model_to_xml.AhpToXmlTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-04-23T16:39:10" hostname="YevvYe" time="0.084">
   <properties/>
-  <testcase name="createXmlFromAHP" classname="ahp_model_to_xml.AhpToXmlTest" time="0.384"/>
+  <testcase name="createXmlFromAHP" classname="ahp_model_to_xml.AhpToXmlTest" time="0.084"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

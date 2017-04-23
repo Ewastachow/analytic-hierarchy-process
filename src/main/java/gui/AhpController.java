@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import static ahp_model.AHPConsistency.checkConsistency;
@@ -37,7 +38,7 @@ public class AhpController {
 
     private AhpViewToModel controller = new AhpViewToModel();
     private static AHP ahp = new AHP();
-    private double consistencyRatio;
+    private double consistencyRatio = 0.1;
     private double[][] currentMatrix;
 
     private String xmlPath;
@@ -48,8 +49,6 @@ public class AhpController {
     private Pane manPane_1;
     @FXML
     private Button nextButton_1;
-    @FXML
-    private Button nextButton_5;
     @FXML
     private Label mainLabel_2;
     @FXML
@@ -90,10 +89,6 @@ public class AhpController {
     private VBox leftWhatCompareFlowPane;
     @FXML
     private VBox upWhatCompareFlowPane;
-    @FXML
-    private Label mainLabel_4;
-    @FXML
-    private Pane manPane_4;
     @FXML
     private TextField xmlFileNameTextField_4;
     @FXML
@@ -140,6 +135,7 @@ public class AhpController {
             }
             nameTextField_2.clear();
         }catch (Exception e){
+            assert currentSelectedTreeItem != null;
             currentSelectedTreeItem.getChildren().add(newObject);
             nameTextField_2.clear();
         }
@@ -161,6 +157,7 @@ public class AhpController {
                 !(currentSelectedTreeItem==rootAlternativeItem) &&
                 !(currentSelectedTreeItem==rootCriteriaItem))
             currentSelectedTreeItem.getParent().getChildren().remove(currentSelectedTreeItem);
+        currentSelectedTreeItem = null;
     }
 
     @FXML
@@ -168,7 +165,9 @@ public class AhpController {
         if(!ratioTextField_3.getText().isEmpty()){
             try{
                 consistencyRatio = Double.parseDouble(ratioTextField_3.getText());
-            }catch(Exception ignored){}
+            }catch(Exception ex){
+                System.out.print("Text inside");
+            }
             ratioLabel_3.setText(String.valueOf(consistencyRatio));
             ratioTextField_3.clear();
         }
@@ -187,28 +186,35 @@ public class AhpController {
     @FXML
     void criteriaTreeViewClicked_3(MouseEvent event) {
         currentSelectedCriterium = criteriaTreeView_3.getSelectionModel().getSelectedItem();
-        createMatrixFlowPane(currentSelectedCriterium.getValue());
+        if(currentSelectedCriterium!=null){
+            createMatrixFlowPane(currentSelectedCriterium.getValue());
+        }
         consistencyLabel_3.setText("");
     }
 
     @FXML
     void generateXMLFileButtonAction_4(ActionEvent event) {
-        if(!xmlFileNameTextField_4.getText().isEmpty()){
-            String name = xmlFileNameTextField_4.getText();
-            xmlPath = "src/main/resources/"+name+".xml";
-            AhpToXml source = new AhpToXml();
-            source.createXmlFromAHP(ahp, xmlPath);
-            messegesLabel_4.setText("Successfuly generated");
-        }else{
-            messegesLabel_4.setText("Wrong name");
-        }
+        if(ahp.alternativesList!=null &&
+                ahp.alternativesList.size()!=0 &&
+                ahp.mainCriterium.subcriteriaList!=null &&
+                ahp.mainCriterium.subcriteriaList.size()!=0){
+            if(!xmlFileNameTextField_4.getText().isEmpty()){
+                String name = xmlFileNameTextField_4.getText();
+                xmlPath = "src/main/resources/"+name+".xml";
+                AhpToXml source = new AhpToXml();
+                source.createXmlFromAHP(ahp, xmlPath);
+                messegesLabel_4.setText("Successfuly generated");
+            }else{
+                messegesLabel_4.setText("Wrong name");
+            }
+        }else messegesLabel_4.setText("Wrong AHP Created");
         xmlFileNameTextField_4.setText("");
     }
 
     @FXML
     void generateVectorButtonAction_4(ActionEvent event) {
         vectorFlowPane_4.getChildren().clear();
-        if(!xmlPath.isEmpty()){
+        if(xmlPath!=null && !xmlPath.isEmpty()){
             File file = new File(xmlPath);
             AHP_xml ahpTree = new AHP_xml(file);
             double[] ahpVector = ahpTree.createVectorWag();
@@ -278,10 +284,16 @@ public class AhpController {
 
     private void init3() {
         ratioLabel_3.setText(String.valueOf(consistencyRatio));
-        rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
-        criteriaTreeView_3.setRoot(rootCriteriaTree);
-        matrixFlowPane.setOnMouseClicked(event1 -> clickedOnCell(event1));
-        createMatrix(ahp.mainCriterium);
+        if(ahp.mainCriterium!=null &&
+                ahp.mainCriterium.subcriteriaList!=null &&
+                ahp.mainCriterium.subcriteriaList.size()!=0 &&
+                ahp.alternativesList!=null &&
+                ahp.alternativesList.size()!=0){
+            rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
+            criteriaTreeView_3.setRoot(rootCriteriaTree);
+            createMatrix(ahp.mainCriterium);
+        }
+        matrixFlowPane.setOnMouseClicked(this::clickedOnCell);
     }
 
     private TreeItem<Criteria> createCriteriaItem(Criteria crit){
@@ -302,7 +314,7 @@ public class AhpController {
         int y = 0;
         int size = currentSelectedCriterium.getValue().matrix.getColumnDimension();
         w = (matrixFlowPane.getPrefWidth() - (matrixFlowPane.getPrefWidth() % size)) / size;
-        h = (250 - (250 % size)) / size;
+        h = (250 - (250 % (double)size)) / (double)size;
         while (posX > w) {
             x++;
             posX -= w;
@@ -367,10 +379,11 @@ public class AhpController {
                     String text = String.valueOf(currentMatrix[i][j]);
                     if(text.length() > 4) text = text.substring(0,4);
                     label.setText(text);
-                    label.setStyle("-fx-background-color: #70deb7;");
+                    label.setStyle("-fx-background-color: #a7adbe;");
                 }else{
                     label.setText("");
-                    label.setStyle("-fx-background-color: #3f393c;");
+                    label.setTextFill(Paint.valueOf("#000000"));
+                    label.setStyle("-fx-background-color: #d9d9d9;");
                 }
                 matrixFlowPane.getChildren().add(label);
             }

@@ -4,8 +4,11 @@ version '1.0'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
+
+mainClassName = 'gui.GuiMain'
 
 repositories {
     mavenCentral()
@@ -17,4 +20,16 @@ dependencies {
     // https://mvnrepository.com/artifact/gov.nist.math/jama
     compile group: 'gov.nist.math', name: 'jama', version: '1.0.3'
 
+}
+
+task fatJar(type: Jar) {
+    //usage fatJar
+    manifest {
+        attributes 'Implementation-Title': 'Implementation',
+                'Implementation-Version': version,
+                'Main-Class': 'gui.GuiMain'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

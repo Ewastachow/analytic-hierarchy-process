@@ -1,4 +1,4 @@
-/**
+package gui; /**
  * Created by yevvy on 26/03/2017.
  */
 
@@ -22,9 +22,11 @@ public class GuiMain extends Application {
         Pane pane = loader.load();
 
         Scene scene = new Scene(pane);
+//        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setTitle("Analytic Hierarchy Process");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
 
     }
