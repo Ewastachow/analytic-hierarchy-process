@@ -1,13 +1,19 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import Jama.Matrix;
 import ahp_model.AHP;
 import ahp_model.Alternative;
 import ahp_model.Criteria;
+import ahp_model_to_xml.AhpToXml;
+import ahp_xml.AHP_xml;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +26,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import static ahp_xml.AHPConsistency.checkConsistency;
 
 public class AhpController {
+
+    static Integer windowConter;
 
     TreeItem<String> currentSelectedTreeItem;
     TreeItem<String> rootAlternativeItem;
@@ -37,100 +43,84 @@ public class AhpController {
     AhpViewToModel controller = new AhpViewToModel();
     static AHP ahp = new AHP();
     public double consistencyRatio;
-
     double[][] currentMatrix;
+
+    String xmlPath;
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Label mainLabel_1;
-
     @FXML
     private Pane manPane_1;
-
     @FXML
     private Button nextButton_1;
-    @FXML
-    private Button nextButton_4;
     @FXML
     private Button nextButton_5;
     @FXML
     private Label mainLabel_2;
-
     @FXML
     private Pane manPane_2;
-
     @FXML
     private TreeView<String> alternativeTreeView_2;
-
     @FXML
     private TreeView<String> criteriaTreeView_2;
-
     @FXML
     private TextField nameTextField_2;
-
     @FXML
     private Button removeButton_2;
-
     @FXML
     private Button addButton_2;
-
     @FXML
     private Button nextButton_2;
-
-
     @FXML
     private Label mainLabel_3;
-
     @FXML
     private Pane manPane_3;
-
     @FXML
     private TreeView<Criteria> criteriaTreeView_3;
-
     @FXML
     private Button checkConsistencyButton_3;
-
-    @FXML
-    private Button setDependenciesButton_3;
-
     @FXML
     private Label questioningLabel_3;
-
     @FXML
     private TextField answerTextField_3;
-
     @FXML
     private Label consistencyLabel_3;
-
     @FXML
     private Button changeConsistencyButton_3;
-
     @FXML
     private Label ratioLabel_3;
-
     @FXML
     private TextField ratioTextField_3;
-
     @FXML
     private Button applyButton_3;
-
     @FXML
     private Button nextButton_3;
-
     @FXML
     private FlowPane matrixFlowPane;
-
     @FXML
     private VBox leftWhatCompareFlowPane;
-
     @FXML
     private VBox upWhatCompareFlowPane;
-
+    @FXML
+    private Label mainLabel_4;
+    @FXML
+    private Pane manPane_4;
+    @FXML
+    private TextField xmlFileNameTextField_4;
+    @FXML
+    private Button generateXMLFileButton_4;
+    @FXML
+    private Label messegesLabel_4;
+    @FXML
+    private Button generateVectorButton_4;
+    @FXML
+    private VBox vectorFlowPane_4;
+    @FXML
+    private Button nextButton_4;
 
     @FXML
     void nextButtonOnAction(ActionEvent event) throws IOException {
@@ -142,7 +132,6 @@ public class AhpController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-//            init2();
         }else if(event.getSource()==nextButton_2){
             ahp = controller.createAHP(rootAlternativeItem, rootCriteriaItem);
             stage=(Stage) nextButton_2.getScene().getWindow();
@@ -164,12 +153,9 @@ public class AhpController {
             stage.show();
         }else{
             //todo zamknąć okno
-
         }
     }
 
-
-    @FXML
     void init2(MouseEvent event) {
         rootAlternativeItem = new TreeItem<>("Alternatives");
         alternativeTreeView_2.setRoot(rootAlternativeItem);
@@ -249,7 +235,6 @@ public class AhpController {
         consistencyLabel_3.setText("");
     }
 
-    @FXML
     void init3(MouseEvent event) {
         ratioLabel_3.setText(String.valueOf(consistencyRatio));
         rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
@@ -259,10 +244,55 @@ public class AhpController {
     }
 
     @FXML
-    void setDependenciesButtonAction_3(ActionEvent event) {
-
+    void generateXMLFileButtonAction_4(ActionEvent event) {
+        if(!xmlFileNameTextField_4.getText().isEmpty()){
+            String name = xmlFileNameTextField_4.getText();
+            xmlPath = "src/main/resources/"+name+".xml";
+            AhpToXml source = new AhpToXml();
+            source.createXmlFromAHP(ahp, xmlPath);
+            messegesLabel_4.setText("Successfuly generated");
+        }else{
+            messegesLabel_4.setText("Wrong name");
+        }
+        xmlFileNameTextField_4.setText("");
     }
 
+    @FXML
+    void generateVectorButtonAction_4(ActionEvent event) {
+        vectorFlowPane_4.getChildren().clear();
+        if(!xmlPath.isEmpty()){
+            File file = new File(xmlPath);
+            AHP_xml ahpTree = new AHP_xml(file);
+            double[] ahpVector = ahpTree.createVectorWag();
+//            Map<String, Double> vectorMap = new HashMap<>();
+//            int size = ahpVector.length;
+//            for(int i = 0; i < size; i++){
+//                String key = ahp.alternativesList.get(i).name;
+//                Double value = ahpVector[i];
+//            }
+//            Arrays.sort(ahpVector);
+//            String[] resultTab = new String[size];
+//            for(int i = 0; i < size; i++){
+//                String nameAlt = new String();
+//                for(Map.Entry<String, Double> j : vectorMap.entrySet())
+//                    if(j.getValue().equals(ahpVector[i])) nameAlt = j.getKey();
+//                String doubleString = String.valueOf(ahpVector[i]);
+//                if(doubleString.length() > 4) doubleString = doubleString.substring(0,4);
+//                resultTab[i] = nameAlt+" - "+doubleString;
+//            }
+//            for(int i=0; i<size; i++){
+//                Label label = new Label();
+//                label.setText(resultTab[i]);
+//                vectorFlowPane_4.getChildren().add(label);
+//            }
+            for(int i = 0; i < ahpVector.length; i++){
+                Label label = new Label();
+                String doubleString = String.valueOf(ahpVector[i]);
+                label.setText(ahp.alternativesList.get(i).name+" - "+doubleString);
+                vectorFlowPane_4.getChildren().add(label);
+            }
+        }
+    }
 
     @FXML
     void initialize() {
@@ -281,7 +311,6 @@ public class AhpController {
         assert manPane_3 != null : "fx:id=\"manPane_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert criteriaTreeView_3 != null : "fx:id=\"criteriaTreeView_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert checkConsistencyButton_3 != null : "fx:id=\"checkConsistencyButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
-        assert setDependenciesButton_3 != null : "fx:id=\"setDependenciesButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert questioningLabel_3 != null : "fx:id=\"questioningLabel_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert answerTextField_3 != null : "fx:id=\"answerTextField_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert consistencyLabel_3 != null : "fx:id=\"consistencyLabel_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
@@ -291,6 +320,19 @@ public class AhpController {
         assert applyButton_3 != null : "fx:id=\"applyButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert nextButton_3 != null : "fx:id=\"nextButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
 
+        if(windowConter==null){
+            windowConter=1;
+        }else if(windowConter==1){
+            windowConter=2;
+            init2(null);
+        }else if(windowConter==2){
+            windowConter=3;
+            init3(null);
+        }else if(windowConter==3){
+            windowConter=4;
+        }else if(windowConter==4){
+            windowConter=5;
+        }
     }
 
     TreeItem<Criteria> createCriteriaItem(Criteria crit){
