@@ -29,11 +29,7 @@ public class AHP_xml {
         try {
             dBuilder = dbFactory.newDocumentBuilder();
             documentXML = dBuilder.parse(file);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
         documentXML.getDocumentElement().normalize();
@@ -70,11 +66,9 @@ public class AHP_xml {
             int tabIterator = 0;
             for(int i = 0; i < childrenList.getLength(); i++)
                 if (childrenList.item(i).getNodeName().equals("criteria")){
-//                    System.out.print("vector size: " + subcriteriasWagVeector.length + " ; TabIt:  "  + tabIterator + "\n");
                     criteriaList.add(postorder((Element)childrenList.item(i), subcriteriasWagVeector[tabIterator]));
                     tabIterator++;
                 }
-//            System.out.print("Lama \n");
             return new VectorWag(createDecisionVector(criteriaList),1);
         }
     }

@@ -11,12 +11,12 @@ public class VectorWag {
     double[] vector;
     double wag;
 
-    public VectorWag(double[] vector, double wag) {
+    VectorWag(double[] vector, double wag) {
         this.vector = vector;
         this.wag = wag;
     }
 
-    public VectorWag() {
+    VectorWag() {
     }
 
     @Override

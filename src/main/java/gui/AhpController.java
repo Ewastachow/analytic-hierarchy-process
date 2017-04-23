@@ -2,11 +2,6 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 import Jama.Matrix;
 import ahp_model.AHP;
@@ -28,29 +23,25 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import static ahp_xml.AHPConsistency.checkConsistency;
+import static ahp_model.AHPConsistency.checkConsistency;
 
 public class AhpController {
 
-    static Integer windowConter;
+    private static Integer windowConter;
 
-    TreeItem<String> currentSelectedTreeItem;
-    TreeItem<String> rootAlternativeItem;
-    TreeItem<String> rootCriteriaItem;
-    TreeItem<Criteria> rootCriteriaTree;
-    TreeItem<Criteria> currentSelectedCriterium;
+    private TreeItem<String> currentSelectedTreeItem;
+    private TreeItem<String> rootAlternativeItem;
+    private TreeItem<String> rootCriteriaItem;
+    private TreeItem<Criteria> rootCriteriaTree;
+    private TreeItem<Criteria> currentSelectedCriterium;
 
-    AhpViewToModel controller = new AhpViewToModel();
-    static AHP ahp = new AHP();
-    public double consistencyRatio;
-    double[][] currentMatrix;
+    private AhpViewToModel controller = new AhpViewToModel();
+    private static AHP ahp = new AHP();
+    private double consistencyRatio;
+    private double[][] currentMatrix;
 
-    String xmlPath;
+    private String xmlPath;
 
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
     @FXML
     private Label mainLabel_1;
     @FXML
@@ -84,10 +75,6 @@ public class AhpController {
     @FXML
     private Button checkConsistencyButton_3;
     @FXML
-    private Label questioningLabel_3;
-    @FXML
-    private TextField answerTextField_3;
-    @FXML
     private Label consistencyLabel_3;
     @FXML
     private Button changeConsistencyButton_3;
@@ -95,8 +82,6 @@ public class AhpController {
     private Label ratioLabel_3;
     @FXML
     private TextField ratioTextField_3;
-    @FXML
-    private Button applyButton_3;
     @FXML
     private Button nextButton_3;
     @FXML
@@ -112,15 +97,9 @@ public class AhpController {
     @FXML
     private TextField xmlFileNameTextField_4;
     @FXML
-    private Button generateXMLFileButton_4;
-    @FXML
     private Label messegesLabel_4;
     @FXML
-    private Button generateVectorButton_4;
-    @FXML
     private VBox vectorFlowPane_4;
-    @FXML
-    private Button nextButton_4;
 
     @FXML
     void nextButtonOnAction(ActionEvent event) throws IOException {
@@ -145,25 +124,7 @@ public class AhpController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }else if(event.getSource()==nextButton_4){
-            stage=(Stage) nextButton_4.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ahp_skeleton_5_goodbye.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }else{
-            //todo zamknąć okno
         }
-    }
-
-    void init2(MouseEvent event) {
-        rootAlternativeItem = new TreeItem<>("Alternatives");
-        alternativeTreeView_2.setRoot(rootAlternativeItem);
-        rootAlternativeItem.setExpanded(true);
-
-        rootCriteriaItem = new TreeItem<>("Criterias");
-        criteriaTreeView_2.setRoot(rootCriteriaItem);
-        rootCriteriaItem.setExpanded(true);
     }
 
     @FXML
@@ -203,18 +164,11 @@ public class AhpController {
     }
 
     @FXML
-    void applyButtonAction_3(ActionEvent event) {
-
-    }
-
-    @FXML
     void changeConsistencyButtonAction_3(ActionEvent event) {
         if(!ratioTextField_3.getText().isEmpty()){
             try{
                 consistencyRatio = Double.parseDouble(ratioTextField_3.getText());
-            }catch(Exception e){
-
-            }
+            }catch(Exception ignored){}
             ratioLabel_3.setText(String.valueOf(consistencyRatio));
             ratioTextField_3.clear();
         }
@@ -222,10 +176,12 @@ public class AhpController {
 
     @FXML
     void checkConsistencyButtonAction_3(ActionEvent event) {
-        if(checkConsistency(currentSelectedCriterium.getValue().matrix, consistencyRatio))
-            consistencyLabel_3.setText("Yes");
-        else
-            consistencyLabel_3.setText("No");
+        if(currentSelectedCriterium!=null){
+            if(checkConsistency(currentSelectedCriterium.getValue().matrix, consistencyRatio))
+                consistencyLabel_3.setText("Yes");
+            else
+                consistencyLabel_3.setText("No");
+        }
     }
 
     @FXML
@@ -233,14 +189,6 @@ public class AhpController {
         currentSelectedCriterium = criteriaTreeView_3.getSelectionModel().getSelectedItem();
         createMatrixFlowPane(currentSelectedCriterium.getValue());
         consistencyLabel_3.setText("");
-    }
-
-    void init3(MouseEvent event) {
-        ratioLabel_3.setText(String.valueOf(consistencyRatio));
-        rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
-        criteriaTreeView_3.setRoot(rootCriteriaTree);
-        matrixFlowPane.setOnMouseClicked(event1 -> clickedOnCell(event1));
-        createMatrix(ahp.mainCriterium);
     }
 
     @FXML
@@ -264,31 +212,19 @@ public class AhpController {
             File file = new File(xmlPath);
             AHP_xml ahpTree = new AHP_xml(file);
             double[] ahpVector = ahpTree.createVectorWag();
-//            Map<String, Double> vectorMap = new HashMap<>();
-//            int size = ahpVector.length;
-//            for(int i = 0; i < size; i++){
-//                String key = ahp.alternativesList.get(i).name;
-//                Double value = ahpVector[i];
-//            }
-//            Arrays.sort(ahpVector);
-//            String[] resultTab = new String[size];
-//            for(int i = 0; i < size; i++){
-//                String nameAlt = new String();
-//                for(Map.Entry<String, Double> j : vectorMap.entrySet())
-//                    if(j.getValue().equals(ahpVector[i])) nameAlt = j.getKey();
-//                String doubleString = String.valueOf(ahpVector[i]);
-//                if(doubleString.length() > 4) doubleString = doubleString.substring(0,4);
-//                resultTab[i] = nameAlt+" - "+doubleString;
-//            }
-//            for(int i=0; i<size; i++){
-//                Label label = new Label();
-//                label.setText(resultTab[i]);
-//                vectorFlowPane_4.getChildren().add(label);
-//            }
+            int amongAltSize = 0;
+            for(Alternative i : ahp.alternativesList)
+                if(i.name.length()>amongAltSize) amongAltSize = i.name.length();
             for(int i = 0; i < ahpVector.length; i++){
                 Label label = new Label();
+                label.setAlignment(Pos.CENTER);
+                label.setPrefWidth(160);
                 String doubleString = String.valueOf(ahpVector[i]);
-                label.setText(ahp.alternativesList.get(i).name+" - "+doubleString);
+                if(doubleString.length() > 4) doubleString = doubleString.substring(0,4);
+                StringBuilder name = new StringBuilder(ahp.alternativesList.get(i).name);
+                while(name.length() < amongAltSize)
+                    name.append(" ");
+                label.setText(name+" - "+doubleString);
                 vectorFlowPane_4.getChildren().add(label);
             }
         }
@@ -311,31 +247,44 @@ public class AhpController {
         assert manPane_3 != null : "fx:id=\"manPane_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert criteriaTreeView_3 != null : "fx:id=\"criteriaTreeView_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert checkConsistencyButton_3 != null : "fx:id=\"checkConsistencyButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
-        assert questioningLabel_3 != null : "fx:id=\"questioningLabel_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
-        assert answerTextField_3 != null : "fx:id=\"answerTextField_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert consistencyLabel_3 != null : "fx:id=\"consistencyLabel_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert changeConsistencyButton_3 != null : "fx:id=\"changeConsistencyButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert ratioLabel_3 != null : "fx:id=\"ratioLabel_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert ratioTextField_3 != null : "fx:id=\"ratioTextField_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
-        assert applyButton_3 != null : "fx:id=\"applyButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
         assert nextButton_3 != null : "fx:id=\"nextButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
 
         if(windowConter==null){
             windowConter=1;
         }else if(windowConter==1){
             windowConter=2;
-            init2(null);
+            init2();
         }else if(windowConter==2){
             windowConter=3;
-            init3(null);
-        }else if(windowConter==3){
-            windowConter=4;
-        }else if(windowConter==4){
-            windowConter=5;
+            init3();
+        }else if(windowConter==3) {
+            windowConter = 4;
         }
     }
 
-    TreeItem<Criteria> createCriteriaItem(Criteria crit){
+    private void init2() {
+        rootAlternativeItem = new TreeItem<>("Alternatives");
+        alternativeTreeView_2.setRoot(rootAlternativeItem);
+        rootAlternativeItem.setExpanded(true);
+
+        rootCriteriaItem = new TreeItem<>("Criterias");
+        criteriaTreeView_2.setRoot(rootCriteriaItem);
+        rootCriteriaItem.setExpanded(true);
+    }
+
+    private void init3() {
+        ratioLabel_3.setText(String.valueOf(consistencyRatio));
+        rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
+        criteriaTreeView_3.setRoot(rootCriteriaTree);
+        matrixFlowPane.setOnMouseClicked(event1 -> clickedOnCell(event1));
+        createMatrix(ahp.mainCriterium);
+    }
+
+    private TreeItem<Criteria> createCriteriaItem(Criteria crit){
         TreeItem<Criteria> result = new TreeItem<>(crit);
         result.setExpanded(true);
         if(crit.hasSubcriteria)
@@ -345,7 +294,7 @@ public class AhpController {
     }
 
     @FXML
-    void clickedOnCell(MouseEvent event){
+    private void clickedOnCell(MouseEvent event){
         double posX = event.getX();
         double posY = event.getY();
         double w, h;
@@ -391,7 +340,7 @@ public class AhpController {
         createMatrixFlowPane(currentSelectedCriterium.getValue());
     }
 
-    void createMatrixFlowPane(Criteria crit){
+    private void createMatrixFlowPane(Criteria crit){
         matrixFlowPane.getChildren().clear();
 
         matrixFlowPane.setMaxWidth(250);
@@ -460,11 +409,11 @@ public class AhpController {
         }
     }
 
-    double[][] matrixToTab(Matrix matrix){
+    private double[][] matrixToTab(Matrix matrix){
         return matrix.getArray();
     }
 
-    Matrix tabToMatrix(double[][] tab){
+    private Matrix tabToMatrix(double[][] tab){
         int size = currentSelectedCriterium.getValue().matrix.getColumnDimension();
         for(int i = 0; i < size; i++ )
             for(int j = 0; j < size; j++ ){
@@ -477,7 +426,7 @@ public class AhpController {
         return new Matrix(tab);
     }
 
-    void createMatrix(Criteria crit){
+    private void createMatrix(Criteria crit){
         crit.matrix = setNewMatrix(crit);
         if(crit.hasSubcriteria){
             for(Criteria i : crit.subcriteriaList){
@@ -486,7 +435,7 @@ public class AhpController {
         }
     }
 
-    Matrix setNewMatrix(Criteria crit){
+    private Matrix setNewMatrix(Criteria crit){
         double[][] futureMatrix;
         if(crit.hasSubcriteria){
             int size = crit.subcriteriaList.size();

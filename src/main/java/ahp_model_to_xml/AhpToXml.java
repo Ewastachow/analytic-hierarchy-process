@@ -41,8 +41,6 @@ public class AhpToXml {
         rootElement.appendChild(addAlternatives(ahpModel.alternativesList));
         rootElement.appendChild(addCriterias(ahpModel.mainCriterium));
 
-        //todo: Implement
-
         saveToFile(path);
     }
 
@@ -114,8 +112,6 @@ public class AhpToXml {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apatche.org/xslt}indent-amount","2");
             transformer.transform(source, result);
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
         } catch (TransformerException e) {
             e.printStackTrace();
         }

@@ -14,12 +14,6 @@ import java.io.File;
 public class App {
 
     public static void main(String[] args) {
-
-        CreateModel cm = new CreateModel();
-        AhpToXml source = new AhpToXml();
-
-        AHP model = cm.startAsking();
-        source.createXmlFromAHP(model, "src/main/resources/tree1.xml");
     }
 
 }

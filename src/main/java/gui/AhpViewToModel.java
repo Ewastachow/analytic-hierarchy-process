@@ -12,12 +12,13 @@ import java.util.List;
 /**
  * Created by yevv on 22.04.17.
  */
-public class AhpViewToModel {
 
-    public Criteria criteriasTreeToModel(TreeItem<String> treeItem){
+class AhpViewToModel {
+
+    private Criteria criteriasTreeToModel(TreeItem<String> treeItem){
         Criteria result;
         int size = treeItem.getChildren().size();
-        if(size==0){
+        if(size == 0){
             result = new Criteria(treeItem.getValue());
         }else{
             List<Criteria> subCritList = new ArrayList<>();
@@ -28,7 +29,7 @@ public class AhpViewToModel {
         return result;
     }
 
-    public List<Alternative> alternativesTreeToModel(TreeItem<String> treeItem){
+    private List<Alternative> alternativesTreeToModel(TreeItem<String> treeItem){
         List<Alternative> result = new ArrayList<>();
         int size = treeItem.getChildren().size();
         for(int i = 0; i < size; i++)
@@ -36,7 +37,7 @@ public class AhpViewToModel {
         return result;
     }
 
-    public AHP createAHP(TreeItem<String> alternativeRoot, TreeItem<String> criteriaRoot){
+    AHP createAHP(TreeItem<String> alternativeRoot, TreeItem<String> criteriaRoot){
         AHP result = new AHP();
         result.alternativesList = alternativesTreeToModel(alternativeRoot);
         result.mainCriterium = criteriasTreeToModel(criteriaRoot);

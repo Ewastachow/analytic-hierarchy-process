@@ -4,15 +4,10 @@ import Jama.Matrix;
 import ahp_model.AHP;
 import ahp_model.Alternative;
 import ahp_model.Criteria;
-import ahp_model.Element;
-import ahp_xml.AHPConsistency;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-import static ahp_xml.AHPConsistency.checkConsistency;
+import static ahp_model.AHPConsistency.checkConsistency;
 
 /**
  * Created by yevvy on 02/04/2017.
@@ -28,7 +23,9 @@ public class CreateModel {
     public AHP startAsking(){
         AHP result = new AHP();
         result.alternativesList = askAlternatives();
-        result.mainCriterium = new Criteria(new Matrix(1,1,1),"start",askCriterias(result.alternativesList.size(), Arrays.asList("start")));
+        result.mainCriterium = new Criteria(new Matrix(1,1,1),
+                "start",askCriterias(result.alternativesList.size(),
+                Collections.singletonList("start")));
         System.out.print("Set consistency ratio:");
         double ratio = scanner.nextDouble();
         checkMatrixes(result.mainCriterium, result.alternativesList, ratio);
@@ -131,6 +128,4 @@ public class CreateModel {
             result.add(i.name);
         return result;
     }
-
-
 }
