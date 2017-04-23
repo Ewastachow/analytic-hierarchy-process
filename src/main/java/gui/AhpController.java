@@ -11,9 +11,11 @@ import ahp_model.Criteria;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -21,6 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import static ahp_xml.AHPConsistency.checkConsistency;
 
 public class AhpController {
 
@@ -220,7 +224,11 @@ public class AhpController {
     @FXML
     void changeConsistencyButtonAction_3(ActionEvent event) {
         if(!ratioTextField_3.getText().isEmpty()){
-            consistencyRatio = Double.parseDouble(ratioTextField_3.getText());
+            try{
+                consistencyRatio = Double.parseDouble(ratioTextField_3.getText());
+            }catch(Exception e){
+
+            }
             ratioLabel_3.setText(String.valueOf(consistencyRatio));
             ratioTextField_3.clear();
         }
@@ -228,13 +236,17 @@ public class AhpController {
 
     @FXML
     void checkConsistencyButtonAction_3(ActionEvent event) {
-
+        if(checkConsistency(currentSelectedCriterium.getValue().matrix, consistencyRatio))
+            consistencyLabel_3.setText("Yes");
+        else
+            consistencyLabel_3.setText("No");
     }
 
     @FXML
     void criteriaTreeViewClicked_3(MouseEvent event) {
         currentSelectedCriterium = criteriaTreeView_3.getSelectionModel().getSelectedItem();
         createMatrixFlowPane(currentSelectedCriterium.getValue());
+        consistencyLabel_3.setText("");
     }
 
     @FXML
@@ -309,12 +321,28 @@ public class AhpController {
             posY -= h;
         }
         if( x > y ){
-            if ( currentMatrix[y][x] >= 1){
-                currentMatrix[y][x] = currentMatrix [y][x] +1;
-                //todo
-            }else{
-                //todo
-
+            if(event.getButton()== MouseButton.PRIMARY){
+                if ( currentMatrix[y][x] >= 1 && currentMatrix[y][x] < 9){
+                    currentMatrix[y][x] = currentMatrix [y][x] +1;
+                }else if(1/currentMatrix[y][x] > 1 && 1/currentMatrix[y][x] < 3){
+                    currentMatrix[y][x] = 1;
+                }else if(currentMatrix[y][x] > 0 && currentMatrix[y][x] < 0.5){
+                    Double tmp = 1 / currentMatrix[y][x];
+                    int tmp2 = tmp.intValue();
+                    tmp2 = tmp2-1;
+                    double tmp3 = (double) tmp2;
+                    currentMatrix[y][x] = 1/tmp3;
+                }
+            }else if(event.getButton() == MouseButton.SECONDARY){
+                if ( currentMatrix[y][x] > 1 && currentMatrix[y][x] < 10){
+                    currentMatrix[y][x] = currentMatrix [y][x] - 1;
+                }else if(currentMatrix[y][x] > 0.12 && currentMatrix[y][x] <= 1){
+                    Double tmp = 1 / currentMatrix[y][x];
+                    int tmp2 = tmp.intValue();
+                    tmp2 = tmp2+1;
+                    double tmp3 = (double) tmp2;
+                    currentMatrix[y][x] = 1/tmp3;
+                }
             }
         }
         currentSelectedCriterium.getValue().matrix = tabToMatrix(currentMatrix);
@@ -336,6 +364,7 @@ public class AhpController {
         for(int i=0; i < among; i++)
             for(int j=0; j < among; j++){
                 Label label = new Label();
+                label.setAlignment(Pos.CENTER);
                 label.setMaxWidth(size);
                 label.setPrefWidth(size);
                 label.setMinWidth(size);
@@ -344,10 +373,10 @@ public class AhpController {
                 label.setMinHeight(size);
 
                 if(j > i){
-                    //todo od -9 do 9
-                    label.setText(String.valueOf(currentMatrix[i][j]));
-                    label.setStyle("-fx-background-color: #5cb696;");
-
+                    String text = String.valueOf(currentMatrix[i][j]);
+                    if(text.length() > 4) text = text.substring(0,4);
+                    label.setText(text);
+                    label.setStyle("-fx-background-color: #70deb7;");
                 }else{
                     label.setText("");
                     label.setStyle("-fx-background-color: #3f393c;");
@@ -394,6 +423,15 @@ public class AhpController {
     }
 
     Matrix tabToMatrix(double[][] tab){
+        int size = currentSelectedCriterium.getValue().matrix.getColumnDimension();
+        for(int i = 0; i < size; i++ )
+            for(int j = 0; j < size; j++ ){
+                if(i == j){
+                    tab[i][j] = 1;
+                }else if(i > j){
+                    tab[i][j] = 1 / tab[j][i];
+                }
+            }
         return new Matrix(tab);
     }
 
