@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Jama.Matrix;
 import ahp_model.AHP;
+import ahp_model.Alternative;
 import ahp_model.Criteria;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +15,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -30,7 +35,6 @@ public class AhpController {
     public double consistencyRatio;
 
     double[][] currentMatrix;
-    Label[][] currentRectangleMatrix;
 
     @FXML
     private ResourceBundle resources;
@@ -115,6 +119,16 @@ public class AhpController {
     private Button nextButton_3;
 
     @FXML
+    private FlowPane matrixFlowPane;
+
+    @FXML
+    private VBox leftWhatCompareFlowPane;
+
+    @FXML
+    private VBox upWhatCompareFlowPane;
+
+
+    @FXML
     void nextButtonOnAction(ActionEvent event) throws IOException {
         Stage stage;
         Parent root;
@@ -128,7 +142,7 @@ public class AhpController {
         }else if(event.getSource()==nextButton_2){
             ahp = controller.createAHP(rootAlternativeItem, rootCriteriaItem);
             stage=(Stage) nextButton_2.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ahp_skeleton_3_matrixes.fxml"));
+            root = FXMLLoader.load(getClass().getResource("ahp_skeleton_3_matrix.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -220,24 +234,16 @@ public class AhpController {
     @FXML
     void criteriaTreeViewClicked_3(MouseEvent event) {
         currentSelectedCriterium = criteriaTreeView_3.getSelectionModel().getSelectedItem();
+        createMatrixFlowPane(currentSelectedCriterium.getValue());
     }
 
     @FXML
     void init3(MouseEvent event) {
         ratioLabel_3.setText(String.valueOf(consistencyRatio));
-
-//        rootCriteriaTree = new TreeItem<>(ahp.mainCriterium);
         rootCriteriaTree = createCriteriaItem(ahp.mainCriterium);
-//        criteriaTreeView_2.setShowRoot(false);
         criteriaTreeView_3.setRoot(rootCriteriaTree);
-    }
-
-    TreeItem<Criteria> createCriteriaItem(Criteria crit){
-        TreeItem<Criteria> result = new TreeItem<>(crit);
-        if(crit.hasSubcriteria)
-            for(Criteria i : crit.subcriteriaList)
-                result.getChildren().add(createCriteriaItem(i));
-        return result;
+        matrixFlowPane.setOnMouseClicked(event1 -> clickedOnCell(event1));
+        createMatrix(ahp.mainCriterium);
     }
 
     @FXML
@@ -274,4 +280,178 @@ public class AhpController {
         assert nextButton_3 != null : "fx:id=\"nextButton_3\" was not injected: check your FXML file 'ahp_skeleton_3_matrixes.fxml'.";
 
     }
+
+    TreeItem<Criteria> createCriteriaItem(Criteria crit){
+        TreeItem<Criteria> result = new TreeItem<>(crit);
+        result.setExpanded(true);
+        if(crit.hasSubcriteria)
+            for(Criteria i : crit.subcriteriaList)
+                result.getChildren().add(createCriteriaItem(i));
+        return result;
+    }
+
+    @FXML
+    void clickedOnCell(MouseEvent event){
+        double posX = event.getX();
+        double posY = event.getY();
+        double w, h;
+        int x = 0;
+        int y = 0;
+        int size = currentSelectedCriterium.getValue().matrix.getColumnDimension();
+        w = (matrixFlowPane.getPrefWidth() - (matrixFlowPane.getPrefWidth() % size)) / size;
+        h = (250 - (250 % size)) / size;
+        while (posX > w) {
+            x++;
+            posX -= w;
+        }
+        while (posY > h) {
+            y++;
+            posY -= h;
+        }
+        if( x > y ){
+            if ( currentMatrix[y][x] >= 1){
+                currentMatrix[y][x] = currentMatrix [y][x] +1;
+                //todo
+            }else{
+                //todo
+
+            }
+        }
+        currentSelectedCriterium.getValue().matrix = tabToMatrix(currentMatrix);
+        createMatrixFlowPane(currentSelectedCriterium.getValue());
+    }
+
+    void createMatrixFlowPane(Criteria crit){
+        matrixFlowPane.getChildren().clear();
+
+        matrixFlowPane.setMaxWidth(250);
+        matrixFlowPane.setPrefWidth(250);
+        matrixFlowPane.setMinWidth(250);
+
+        int among = crit.matrix.getColumnDimension();
+        double size = (250 / among) - 4;
+
+        currentMatrix = matrixToTab(crit.matrix);
+
+        for(int i=0; i < among; i++)
+            for(int j=0; j < among; j++){
+                Label label = new Label();
+                label.setMaxWidth(size);
+                label.setPrefWidth(size);
+                label.setMinWidth(size);
+                label.setMaxHeight(size);
+                label.setPrefHeight(size);
+                label.setMinHeight(size);
+
+                if(j > i){
+                    //todo od -9 do 9
+                    label.setText(String.valueOf(currentMatrix[i][j]));
+                    label.setStyle("-fx-background-color: #5cb696;");
+
+                }else{
+                    label.setText("");
+                    label.setStyle("-fx-background-color: #3f393c;");
+                }
+                matrixFlowPane.getChildren().add(label);
+            }
+        leftWhatCompareFlowPane.getChildren().clear();
+        upWhatCompareFlowPane.getChildren().clear();
+        if(crit.hasSubcriteria){
+            for(Criteria i : crit.subcriteriaList){
+                Label label = new Label();
+                label.setMaxHeight(size);
+                label.setPrefHeight(size);
+                label.setMinHeight(size);
+                label.setText(i.name);
+                Label labelClone = new Label();
+                labelClone.setMaxHeight(size);
+                labelClone.setPrefHeight(size);
+                labelClone.setMinHeight(size);
+                labelClone.setText(i.name);
+                leftWhatCompareFlowPane.getChildren().add(label);
+                upWhatCompareFlowPane.getChildren().add(labelClone);
+            }
+        }else{
+            for(Alternative i : ahp.alternativesList){
+                Label labelClone = new Label();
+                labelClone.setPrefHeight(size);
+                labelClone.setMaxHeight(size);
+                labelClone.setMinHeight(size);
+                labelClone.setText(i.name);
+                Label label = new Label();
+                label.setPrefHeight(size);
+                label.setMinHeight(size);
+                label.setMaxHeight(size);
+                label.setText(i.name);
+                leftWhatCompareFlowPane.getChildren().add(label);
+                upWhatCompareFlowPane.getChildren().add(labelClone);
+            }
+        }
+    }
+
+    double[][] matrixToTab(Matrix matrix){
+        return matrix.getArray();
+    }
+
+    Matrix tabToMatrix(double[][] tab){
+        return new Matrix(tab);
+    }
+
+    void createMatrix(Criteria crit){
+        crit.matrix = setNewMatrix(crit);
+        if(crit.hasSubcriteria){
+            for(Criteria i : crit.subcriteriaList){
+                createMatrix(i);
+            }
+        }
+    }
+
+    Matrix setNewMatrix(Criteria crit){
+        double[][] futureMatrix;
+        if(crit.hasSubcriteria){
+            int size = crit.subcriteriaList.size();
+            futureMatrix = new double[size][size];
+            for(int i = 0; i < size; i++)
+                for(int j = 0; j < size; j++){
+                    futureMatrix[i][j] = 1;
+                }
+        }else{
+            int size = ahp.alternativesList.size();
+            futureMatrix = new double[size][size];
+            for(int i = 0; i < size; i++)
+                for(int j = 0; j < size; j++){
+                    futureMatrix[i][j] = 1;
+                }
+        }
+        return new Matrix(futureMatrix);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
